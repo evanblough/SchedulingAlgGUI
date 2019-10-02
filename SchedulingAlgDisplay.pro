@@ -17,12 +17,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     edfscheduler.cpp \
+    graphdisplay.cpp \
     main.cpp \
     mainwindow.cpp \
     task.cpp
 
 HEADERS += \
     edfscheduler.h \
+    graphdisplay.h \
     mainwindow.h \
     task.h
 

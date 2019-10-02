@@ -1,8 +1,9 @@
 #include "mainwindow.h"
-
+#include "QPainter"
 #include <QApplication>
 #include "task.h"
 #include "edfscheduler.h"
+#include "graphdisplay.h"
 
 int main(int argc, char *argv[])
 {
@@ -21,6 +22,9 @@ int main(int argc, char *argv[])
     tasks[2].setComputation_time(1);
 
     EDFScheduler *scheduler = new EDFScheduler(nullptr, tasks, 3);
+
+    GraphDisplay *g = new GraphDisplay();
+    g->show();
 
 
     return a.exec();
