@@ -15,6 +15,8 @@ public:
 signals:
 
 public slots:
+private:
+    void draw_textbox(int x, int y, int width, int height, QColor background, QColor text_color, QString taskname);
 };
 
 #endif // GRAPHDISPLAY_H

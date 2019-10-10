@@ -9,14 +9,17 @@ GraphDisplay::GraphDisplay(QWidget *parent) : QWidget(parent)
 }
 void GraphDisplay::paintEvent(QPaintEvent *event)
 {
-    int width = event->rect().width();
-    int height = event->rect().height();
-    QRect *rect = new QRect(0, 0, width/40, height/10);
+    int width = event->rect().width() /20;
+    int height = event->rect().height() /10;
+    this->draw_textbox(0, 0, width, height, Qt::red, Qt::black, "T1");
+
+}
+void GraphDisplay::draw_textbox(int x, int y, int width, int height, QColor background, QColor text_color, QString taskname ){
+    QRect *rect = new QRect(x, y, width, height);
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
-    painter.setPen(Qt::blue);
-    painter.fillRect(*rect, Qt::red);
+    painter.setPen(text_color);
+    painter.fillRect(*rect, background);
     painter.drawRect(*rect);
-    painter.drawText(*rect, Qt::AlignCenter,
-                      "T1");
+    painter.drawText(*rect, Qt::AlignCenter, "T1");
 }
