@@ -9,6 +9,9 @@ class EDFScheduler : public QObject
     Q_OBJECT
 public:
     explicit EDFScheduler(QObject *parent = nullptr, Task* tasks = nullptr, int num_of_tasks =0);
+    int * schedule;
+    int num_tasks;
+    int time_len;
 signals:
 
 public slots:

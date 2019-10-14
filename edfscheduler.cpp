@@ -16,12 +16,10 @@ EDFScheduler::EDFScheduler(QObject *parent, Task* tasks, int num_of_tasks) : QOb
     int lcm = return_lcm(a, num_of_tasks);
     printf("LCM :%d\n", lcm);
 
-    int schedule[num_of_tasks][lcm];
+    int *schedule = (int*) malloc(sizeof(int)*lcm) ;
     //Populate schedule with null values
     for(int i =0; i < lcm; i++){
-        for(int j =0; j < num_of_tasks; j++){
-            schedule[j][i] = 0;
-        }
+            schedule[i] = -1;
     }
 
     //Iterate through tasks for LCM
@@ -46,11 +44,14 @@ EDFScheduler::EDFScheduler(QObject *parent, Task* tasks, int num_of_tasks) : QOb
         }
         if(tasks[earliest_deadline_index].getRemaining_cpu_time() != 0){
         //Schedule Task for one unit of time
-        schedule[earliest_deadline_index][i] = 1;
+        schedule[i] = earliest_deadline_index;
         //Update remaining CPU Time of scheduled task
         tasks[earliest_deadline_index].setRemaining_cpu_time((tasks+earliest_deadline_index)->getRemaining_cpu_time() - 1);
         }
     }
+    this->time_len = lcm;
+    this->num_tasks = num_of_tasks;
+    this->schedule = schedule;
 }
 
 int return_lcm(int *periods, int n){
