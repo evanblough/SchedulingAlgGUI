@@ -12,6 +12,8 @@ GraphDisplay::GraphDisplay(QWidget *parent, int *schedule, int sched_len, int nu
     this->update();
 
 }
+
+//Called everytime a paintevent triggered ex: resize screen etc.
 void GraphDisplay::paintEvent(QPaintEvent *event)
 {
 
@@ -32,21 +34,21 @@ void GraphDisplay::paintEvent(QPaintEvent *event)
         }
 
     }
-
+    //Shouldn't have more than 10^50 tasks
+    char task_name[50];
     //Iterate through schedule and paint boxes in relative coordinates
     for(int i = 0; i < sched_len; i++){
             if(*(schedule + i) != -1){
-                fflush(stdout);
-                printf("i = %d, task number = %d \n", i, *(schedule+i));
-                draw_textbox(i*width, *(schedule+i)*height, width, height, task_colors[*(schedule+i)], Qt::black, "T");
+                sprintf(task_name, "T%d", *(schedule+i));
+                draw_textbox(i*width, *(schedule+i)*height, width, height, task_colors[*(schedule+i)], Qt::black, task_name);
             }
     }
-
     //Create Timeline
     draw_timeline(event->rect().width(), event->rect().height(), 1, width, height, 0, sched_len);
 
 
 }
+
 void GraphDisplay::draw_textbox(int x, int y, int width, int height, QColor background, QColor text_color, QString taskname ){
     QRect *rect = new QRect(x, y, width, height);
     QPainter painter(this);
@@ -68,11 +70,9 @@ void GraphDisplay::draw_timeline(int box_width, int box_height, int linewidth, i
     //Draw Hashes
 
     for(int i = 1; i < box_width/width; i++){
-        for(int j = 0; j < box_height/height; j++){
-           painter.drawLine(i*width, (j)*height, i*width, (j+1)*height - height/2);
-        }
+        painter.drawLine(i*width, 0, i*width, box_height);
         sprintf(index, "%d", start_time + i);
-        painter.drawText(i*width, box_height - height/2, index);
+        painter.drawText(i*width + 5, box_height - height/4*3, index);
     }
 
 
