@@ -60,17 +60,22 @@ void GraphDisplay::draw_textbox(int x, int y, int width, int height, QColor back
 void GraphDisplay::draw_timeline(int box_width, int box_height, int linewidth, int width, int height, int start_time, int end_time){
 
     QPainter painter(this);
+    char index[end_time - start_time];
     //Draw Horizontal Line
     painter.setPen(Qt::black);
+    painter.drawLine(0, box_height - height, box_width, box_height - height);
     painter.drawLine(0, box_height - height/2, box_width, box_height - height/2);
     //Draw Hashes
-    painter.setPen(Qt::gray);
+
     for(int i = 1; i < box_width/width; i++){
-        for(int j = 1; j < box_height/height; j+=2){
-            painter.drawLine(i*width, j*height, i*width, j*height);
-            printf("Hash at y1 = %d, y2 = %d\n", j*height, j*height);
+        for(int j = 0; j < box_height/height; j++){
+           painter.drawLine(i*width, (j)*height, i*width, (j+1)*height - height/2);
         }
+        sprintf(index, "%d", start_time + i);
+        painter.drawText(i*width, box_height - height/2, index);
     }
+
+
 
 
 
