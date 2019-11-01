@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 
     EDFScheduler *scheduler = new EDFScheduler(nullptr, tasks, 3);
 
-    GraphDisplay *g = new GraphDisplay(nullptr, scheduler->schedule, scheduler->time_len, scheduler->num_tasks);
+    GraphDisplay *g = new GraphDisplay(nullptr, scheduler->schedule, scheduler->time_len, scheduler->num_tasks, 20, 10);
     g->show();
 
 
