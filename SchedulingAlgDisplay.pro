@@ -16,16 +16,24 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    aperiodicscheduler.cpp \
+    aperiodictask.cpp \
     edfscheduler.cpp \
     graphdisplay.cpp \
     main.cpp \
     mainwindow.cpp \
+    periodictask.cpp \
+    pollingserver.cpp \
     task.cpp
 
 HEADERS += \
+    aperiodicscheduler.h \
+    aperiodictask.h \
     edfscheduler.h \
     graphdisplay.h \
     mainwindow.h \
+    periodictask.h \
+    pollingserver.h \
     task.h
 
 FORMS += \
