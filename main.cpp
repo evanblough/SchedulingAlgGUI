@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "QPainter"
 #include <QApplication>
+#include <QBoxLayout>
 #include "task.h"
 #include "edfscheduler.h"
 #include "graphdisplay.h"
@@ -24,7 +25,10 @@ int main(int argc, char *argv[])
     EDFScheduler *scheduler = new EDFScheduler(nullptr, tasks, 3);
 
     GraphDisplay *g = new GraphDisplay(nullptr, scheduler->schedule, scheduler->time_len, scheduler->num_tasks, 20, 10);
-    g->show();
+    w.layout()->addWidget(g);
+
+
+
 
 
     return a.exec();
