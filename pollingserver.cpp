@@ -17,9 +17,16 @@ PollingServer::PollingServer(AperiodicTask* aper_tasks, PeriodicTask* per_tasks,
 void PollingServer::produce_schedule(){
 
 }
-void PollingServer::perform_scheduability_test(){
-    this->setScheduable(true);
 
+void PollingServer::perform_scheduability_test(){
+    if(periodic_scheduability()){
+        setScheduable(aperiodic_scheduability());
+    }
+    else setScheduable(false);
+
+}
+
+bool PollingServer::aperiodic_scheduability(){
    //For every aperiodic task ensure that following condition is met
    AperiodicTask ai;
     for(int i = 0; i < this->num_aper_tasks; i++){
@@ -31,12 +38,22 @@ void PollingServer::perform_scheduability_test(){
         //Ps + ceil(Ca/Cs)*Ps>Da ==> Not Scheduable
         int Da = ai.getDeadline();
         if(Ps + ceil_*Ps > Da){
-            this->setScheduable(false);
-            return;
+            return false;
         }
 
     }
-    //Workload is scheduable
+    return true;
+}
+
+bool PollingServer::periodic_scheduability(){
+    PeriodicTask ti;
+    double sum_computation = 0;
+    for(int i = 0; i < this->num_per_tasks; i++){
+        ti = this->per_tasks[i];
+        sum_computation += ti.getComputation_time()/ti.getPeriod();
+    }
+    return (sum_computation <= this->num_per_tasks*(pow(2.0, 1.0/this->num_per_tasks)-1));
+
 }
 
 

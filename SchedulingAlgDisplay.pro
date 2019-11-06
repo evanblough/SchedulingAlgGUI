@@ -24,7 +24,8 @@ SOURCES += \
     mainwindow.cpp \
     periodictask.cpp \
     pollingserver.cpp \
-    task.cpp
+    task.cpp \
+    tests.cpp
 
 HEADERS += \
     aperiodicscheduler.h \
@@ -34,7 +35,8 @@ HEADERS += \
     mainwindow.h \
     periodictask.h \
     pollingserver.h \
-    task.h
+    task.h \
+    tests.h
 
 FORMS += \
     mainwindow.ui

@@ -15,6 +15,8 @@ public:
     void produce_schedule();
     void perform_scheduability_test();
 private:
+    bool aperiodic_scheduability();
+    bool periodic_scheduability();
     AperiodicTask* aper_tasks;
     PeriodicTask* per_tasks;
     int num_aper_tasks, num_per_tasks;
