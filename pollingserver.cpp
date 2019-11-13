@@ -2,6 +2,22 @@
 #include "stdlib.h"
 #include <cmath>
 
+
+/**
+ * @brief PollingServer::PollingServer
+ * This class is an extension of the Aperiodic scheduler class.
+ * This class holds methods that generate schedule objects accoridng to polling server algorithim conventions.
+ * This class emulates the function of a polling server scheduling algorithim.
+ * @param aper_tasks
+ * This parameter is an array of aperodic task objects. Each object holds data fields like period and computation time.
+ * @param per_tasks
+ * This parameter is an array of periodic task objects.
+ * @param num_aper_tasks
+ * This parameter indicates the length of the aperiodic task array
+ * @param num_per_tasks
+ * This parameter indicates the length of the periodic task array
+ */
+
 PollingServer::PollingServer(AperiodicTask* aper_tasks, PeriodicTask* per_tasks, int num_aper_tasks, int num_per_tasks)
 {
     this->aper_tasks = aper_tasks;
@@ -14,6 +30,10 @@ PollingServer::PollingServer(AperiodicTask* aper_tasks, PeriodicTask* per_tasks,
 
 }
 
+/**
+ * @brief PollingServer::produce_schedule
+ * This function populates the schedule integer array with a correct schedule
+ */
 void PollingServer::produce_schedule(){
 
 }
