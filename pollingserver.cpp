@@ -38,6 +38,10 @@ void PollingServer::produce_schedule(){
 
 }
 
+/**
+ * @brief PollingServer::perform_scheduability_test
+ * This function checks the aperiodic and periodic scheduability of the given workload that was supplied in this instance of a Polling Server Object
+ */
 void PollingServer::perform_scheduability_test(){
     if(periodic_scheduability()){
         setScheduable(aperiodic_scheduability());
@@ -46,6 +50,11 @@ void PollingServer::perform_scheduability_test(){
 
 }
 
+/**
+ * @brief PollingServer::aperiodic_scheduability
+ * Used by perform_scheduability_test() to populate the schedubale field.
+ * @return returns a boolean value coresponding to whether the aperiodic workload is able to be scheduled
+ */
 bool PollingServer::aperiodic_scheduability(){
    //For every aperiodic task ensure that following condition is met
    AperiodicTask ai;
@@ -65,6 +74,11 @@ bool PollingServer::aperiodic_scheduability(){
     return true;
 }
 
+/**
+ * @brief PollingServer::periodic_scheduability
+ * Used by perform_scheduability_test() to populate the schedubale field.
+ * @return returns a boolean value coresponding to whether the periodic workload is able to be scheduled.
+ */
 bool PollingServer::periodic_scheduability(){
     PeriodicTask ti;
     double sum_computation = 0;

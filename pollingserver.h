@@ -14,9 +14,9 @@ public:
     PollingServer(AperiodicTask* aper_tasks, PeriodicTask* per_tasks, int num_aper_tasks, int num_per_tasks);
     void produce_schedule();
     void perform_scheduability_test();
-private:
     bool aperiodic_scheduability();
     bool periodic_scheduability();
+private:
     AperiodicTask* aper_tasks;
     PeriodicTask* per_tasks;
     int num_aper_tasks, num_per_tasks;
