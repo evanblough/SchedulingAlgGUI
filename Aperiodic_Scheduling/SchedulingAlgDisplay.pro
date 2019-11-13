@@ -22,8 +22,8 @@ SOURCES += \
     Backend/pollingserver.cpp \
     Frontend/graphdisplay.cpp \
     main.cpp \
-    mainwindow.cpp \
-    tests.cpp \
+    mainwindow.cpp \ \
+    manualtests.cpp
 
 HEADERS += \
     Backend/aperiodicscheduler.h \
@@ -31,8 +31,8 @@ HEADERS += \
     Backend/periodictask.h \
     Backend/pollingserver.h \
     Frontend/graphdisplay.h \
-    mainwindow.h \
-    tests.h \
+    mainwindow.h \ \
+    manualtests.h
 
 FORMS += \
     mainwindow.ui \
