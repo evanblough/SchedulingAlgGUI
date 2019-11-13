@@ -2,13 +2,11 @@
 #include "QPainter"
 #include <QApplication>
 #include <QBoxLayout>
-#include "task.h"
-#include "edfscheduler.h"
-#include "graphdisplay.h"
-#include "periodictask.h"
-#include "aperiodictask.h"
-#include "aperiodicscheduler.h"
-#include "pollingserver.h"
+#include "Frontend/graphdisplay.h"
+#include "Backend/periodictask.h"
+#include "Backend/aperiodictask.h"
+#include "Backend/aperiodicscheduler.h"
+#include "Backend/pollingserver.h"
 
 int main(int argc, char *argv[])
 {

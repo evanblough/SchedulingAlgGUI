@@ -16,30 +16,26 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    aperiodicscheduler.cpp \
-    aperiodictask.cpp \
-    edfscheduler.cpp \
-    graphdisplay.cpp \
+    Backend/aperiodicscheduler.cpp \
+    Backend/aperiodictask.cpp \
+    Backend/periodictask.cpp \
+    Backend/pollingserver.cpp \
+    Frontend/graphdisplay.cpp \
     main.cpp \
     mainwindow.cpp \
-    periodictask.cpp \
-    pollingserver.cpp \
-    task.cpp \
-    tests.cpp
+    tests.cpp \
 
 HEADERS += \
-    aperiodicscheduler.h \
-    aperiodictask.h \
-    edfscheduler.h \
-    graphdisplay.h \
+    Backend/aperiodicscheduler.h \
+    Backend/aperiodictask.h \
+    Backend/periodictask.h \
+    Backend/pollingserver.h \
+    Frontend/graphdisplay.h \
     mainwindow.h \
-    periodictask.h \
-    pollingserver.h \
-    task.h \
-    tests.h
+    tests.h \
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
