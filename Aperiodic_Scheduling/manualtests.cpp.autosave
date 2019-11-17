@@ -1,0 +1,21 @@
+#include "manualtests.h"
+
+ManualTests::ManualTests()
+{
+
+}
+
+void ManualTests::scheduability_unit_test(){
+    
+}
+void ManualTests::initTestCase(){
+    
+}
+void ManualTests::init(){
+    
+}
+void ManualTests::cleanup(){
+    
+}
+
+

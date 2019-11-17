@@ -1,0 +1,22 @@
+#ifndef MANUALTESTS_H
+#define MANUALTESTS_H
+
+#include <QObject>
+#include "Backend/aperiodicscheduler.h"
+#include "Backend/aperiodictask.h"
+
+class ManualTests
+{
+    Q_OBJECT
+public:
+    ManualTests();
+private slots:
+    void scheduability_unit_test();
+    void initTestCase();
+    void init();
+    void cleanup();
+private:
+    Aperiodic
+};
+
+#endif // MANUALTESTS_H
