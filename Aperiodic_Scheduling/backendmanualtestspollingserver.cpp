@@ -10,17 +10,19 @@ BackendManualTestsPollingServer::BackendManualTestsPollingServer(QObject* parent
 
 }
 
-bool BackendManualTestsPollingServer::results(PollingServer* ps, int len, int* sched, bool* expected, int i){
+bool BackendManualTestsPollingServer::results(PollingServer* ps, int len, int* sched, bool expected, int i){
     switch (i){
     default:
         return false;
     case 0:
-       return ps->periodic_scheduability() == expected[0];
+       printf("Periodic Scheduability: %d\n",ps->periodic_scheduability());
+       printf("Expected: %d\n", expected);
+       return ps->periodic_scheduability() == expected;
     case 1:
-        return ps->aperiodic_scheduability() == expected[1];
+        return ps->aperiodic_scheduability() == expected;
     case 2:
         ps->perform_scheduability_test();
-        return  ps->getScheduable() == expected[2];
+        return  ps->getScheduable() == expected;
     case 3:
         return len == ps->getSchedule_length();
     case 4:
@@ -40,14 +42,62 @@ bool BackendManualTestsPollingServer::results(PollingServer* ps, int len, int* s
  * aperioidic workload that is not scheduable with the given periodic workload.
  * There is an aperiodic task the enters at time 0, and this task
  */
-void BackendManualTestsPollingServer::workload_one_test(){
+void BackendManualTestsPollingServer::periodic_fail_one(){
 
     //Ti {ci, pi}, Ai {ri, ci, di}
     PeriodicTask per_tasks[1];
     AperiodicTask aper_tasks[3];
-    //T1 = Ts {3,10};
+    //T1 = Ts {11,10};
+    per_tasks[0].setComputation_time(11);
     per_tasks[0].setPeriod(10);
+    //A1 {0,2,10}
+    aper_tasks[0].setReady_time(0);
+    aper_tasks[0].setComputation_time(2);
+    aper_tasks[0].setDeadline(10);
+    //A2 {0,2,20}
+    aper_tasks[1].setReady_time(0);
+    aper_tasks[1].setComputation_time(2);
+    aper_tasks[1].setDeadline(20);
+    //A3 {0,2,30}
+    aper_tasks[2].setReady_time(0);
+    aper_tasks[2].setComputation_time(2);
+    aper_tasks[2].setDeadline(30);
+
+
+    PollingServer* ps = new PollingServer(aper_tasks, per_tasks, 3, 1);
+    //Input Expected values
+    bool expected[3];
+    //Periodic Scheduability = True
+    expected[0] = false;
+    //Aperiodic Scheduability = False
+    expected[1] = true;
+    //Scheduable = false;
+    expected[2] = false;
+
+    //Verify that each test has passed
+    for(int i = 0; i < 5; i++){
+        //Conver QString to const char *
+        QByteArray ba = result_messages(i).toLocal8Bit();
+        char* str = ba.data();
+        printf("i = %d\n", i);
+        QVERIFY2(results(ps, 0, nullptr, expected[i], i), str);
+        if(!ps->getScheduable() && i == 2){
+            break;
+        }
+    }
+}
+/**
+ * @brief BackendManualTestsPollingServer::periodic_fail_one This test tests that an incorrect periodic task load
+ * won't run
+ */
+void BackendManualTestsPollingServer::aperiodic_fail_one(){
+
+    //Ti {ci, pi}, Ai {ri, ci, di}
+    PeriodicTask per_tasks[1];
+    AperiodicTask aper_tasks[3];
+    //T1 = Ts {11,10};
     per_tasks[0].setComputation_time(3);
+    per_tasks[0].setPeriod(10);
     //A1 {0,2,10}
     aper_tasks[0].setReady_time(0);
     aper_tasks[0].setComputation_time(2);
@@ -74,7 +124,7 @@ void BackendManualTestsPollingServer::workload_one_test(){
         //Conver QString to const char *
         QByteArray ba = result_messages(i).toLocal8Bit();
         char* str = ba.data();
-        QVERIFY2(results(ps, 0, nullptr, expected, i), str);
+        QVERIFY2(results(ps, 0, nullptr, expected[i], i), str);
         if(!ps->getScheduable() && i == 2){
             break;
         }

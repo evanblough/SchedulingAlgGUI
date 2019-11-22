@@ -35,6 +35,12 @@ PollingServer::PollingServer(AperiodicTask* aper_tasks, PeriodicTask* per_tasks,
  * This function populates the schedule integer array with a correct schedule
  */
 void PollingServer::produce_schedule(){
+    this->setScheduable(true);
+
+    //Calculate Length of Schedule
+
+
+
 
 }
 
@@ -43,11 +49,12 @@ void PollingServer::produce_schedule(){
  * This function checks the aperiodic and periodic scheduability of the given workload that was supplied in this instance of a Polling Server Object
  */
 void PollingServer::perform_scheduability_test(){
+    this->setScheduable(false);
+    //If periodic workload pass
     if(periodic_scheduability()){
-        setScheduable(aperiodic_scheduability());
+        //Set scheduable to true if guranteed otherwise set to result of exact analysis
+        setScheduable(aperiodic_scheduability() || this->getScheduable());
     }
-    else setScheduable(false);
-
 }
 
 /**
@@ -64,9 +71,11 @@ bool PollingServer::aperiodic_scheduability(){
         double ca_cs = double(ai.getComputation_time())/double(this->alloted_server->getComputation_time());
         int ceil_ = ceil(ca_cs);
 
-        //Ps + ceil(Ca/Cs)*Ps>Da ==> Not Scheduable
+        //Ps + ceil(Ca/Cs)*Ps<=Da ==> Scheduling Guranteed
         int Da = ai.getDeadline();
         if(Ps + ceil_*Ps > Da){
+            //Perform Exact Analysis to confirm scheduability
+
             return false;
         }
 
@@ -81,11 +90,13 @@ bool PollingServer::aperiodic_scheduability(){
  */
 bool PollingServer::periodic_scheduability(){
     PeriodicTask ti;
-    double sum_computation = 0;
+    double sum_computation = 0.0;
     for(int i = 0; i < this->num_per_tasks; i++){
         ti = this->per_tasks[i];
-        sum_computation += ti.getComputation_time()/ti.getPeriod();
+        sum_computation += ((double)ti.getComputation_time())/((double)ti.getPeriod());
     }
+    printf("%f\n", sum_computation);
+    printf("%f\n", this->num_per_tasks*(pow(2.0, 1.0/this->num_per_tasks)-1));
     return (sum_computation <= this->num_per_tasks*(pow(2.0, 1.0/this->num_per_tasks)-1));
 
 }

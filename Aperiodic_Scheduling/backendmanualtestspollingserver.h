@@ -12,12 +12,13 @@ class BackendManualTestsPollingServer: public QObject
 public:
     BackendManualTestsPollingServer(QObject *parent);
 private slots:
-    void workload_one_test();
+    void aperiodic_fail_one();
+    void periodic_fail_one();
     void initTestCase();
     void init();
     void cleanup();
 private:
-    bool results(PollingServer* ps, int len, int* sched, bool* expected, int i);
+    bool results(PollingServer* ps, int len, int* sched, bool expected, int i);
     QString result_messages(int i);
 
 };
