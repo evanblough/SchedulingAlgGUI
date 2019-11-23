@@ -78,3 +78,53 @@ void AperiodicScheduler::setScheduable(bool value)
 {
     scheduable = value;
 }
+
+int AperiodicScheduler::getNum_aper_tasks() const
+{
+    return num_aper_tasks;
+}
+
+void AperiodicScheduler::setNum_aper_tasks(int value)
+{
+    num_aper_tasks = value;
+}
+
+int AperiodicScheduler::getNum_per_tasks() const
+{
+    return num_per_tasks;
+}
+
+void AperiodicScheduler::setNum_per_tasks(int value)
+{
+    num_per_tasks = value;
+}
+
+AperiodicTask *AperiodicScheduler::getAper_tasks() const
+{
+    return aper_tasks;
+}
+
+void AperiodicScheduler::setAper_tasks(AperiodicTask *value)
+{
+    aper_tasks = value;
+}
+
+PeriodicTask *AperiodicScheduler::getPer_tasks() const
+{
+    return per_tasks;
+}
+
+void AperiodicScheduler::setPer_tasks(PeriodicTask *value)
+{
+    per_tasks = value;
+}
+
+PeriodicTask *AperiodicScheduler::getAlloted_server() const
+{
+    return alloted_server;
+}
+
+void AperiodicScheduler::setAlloted_server(PeriodicTask *value)
+{
+    alloted_server = value;
+}

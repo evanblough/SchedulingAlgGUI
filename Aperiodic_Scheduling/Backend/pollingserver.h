@@ -17,10 +17,8 @@ public:
     bool aperiodic_scheduability();
     bool periodic_scheduability();
 private:
-    AperiodicTask* aper_tasks;
-    PeriodicTask* per_tasks;
-    int num_aper_tasks, num_per_tasks;
-    PeriodicTask* alloted_server;
+    int calculate_sched_len();
+    int calculate_lcm(int* periods, int n);
 };
 
 #endif // POLLINGSERVER_H
