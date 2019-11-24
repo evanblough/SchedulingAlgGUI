@@ -1,10 +1,12 @@
 #include "pollingserver.h"
 #include "stdlib.h"
 #include <cmath>
-
+#include <queue>
+#include <vector>
+#include <iostream>
+#include "Backend/deadlinecomparator.h"
 
 int gcd(int a, int b);
-
 
 
 /**
@@ -35,7 +37,7 @@ PollingServer::PollingServer(AperiodicTask* aper_tasks, PeriodicTask* per_tasks,
     //Use methods to fill fields
     this->perform_scheduability_test();
     this->produce_schedule();
-
+    this->perform_scheduability_test();
 
 
 
@@ -49,7 +51,31 @@ void PollingServer::produce_schedule(){
     this->setScheduable(true);
 
     //Calculate Length of Schedule
-    this->calculate_sched_len();
+    this->setSchedule_length(this->calculate_sched_len());
+
+    //Runtime Scheduling Loop
+    for(int time = 0; time < this->getSchedule_length(); time++){
+
+        //Refresh Remaining CPU time for periodic tasks for period time
+        for(int i = 0; i < this->getNum_per_tasks(); i++){
+            if(time == this->getPer_tasks()[i].getPeriod()){
+                this->getPer_tasks()[i].setRemaining_cpu_time(this->getPer_tasks()[i].getComputation_time());
+            }
+        }
+
+        //Check Aperiodic FIFO Queue or Earliest deadline
+        //I choose an EDF Heap pros: Prevents total system failure in more cases; cons: will result in later response time for some workloads.
+        //std::priority_queue<AperiodicTask, std::vector<AperiodicTask()>, DeadlineComparator> pq;
+
+
+
+
+        //Check if instance of Ts and Pop from queue or sleep
+
+        //Schedule with RMS convention
+
+
+    }
 
 
 
@@ -113,18 +139,45 @@ bool PollingServer::periodic_scheduability(){
 
 }
 
+/**
+ * @brief PollingServer::calculate_sched_len
+ * This function is used to calculate the length of the schedule to be calculated. In order to prevent
+ * uncessary computations, the combined schedulers only calculate task allocation when it is not easily predictable.
+ * This will calculate when the last aperiodic task will finish and the next LCM cycle of periods. After the aperiodic load
+ * is finished the tasks will simply repeat according to RMS (Rate Monotonic Scheduling) convetions.
+ * @return Returns the length of the schedule array.
+ */
 int PollingServer::calculate_sched_len(){
+
+    //Find LCM
     int periods[this->getNum_per_tasks()];
     for(int i = 0; i < this->getNum_per_tasks(); i++){
         periods[i] = (this->getPer_tasks()+i)->getPeriod();
     }
     int lcm = this->calculate_lcm(periods, this->getNum_per_tasks());
-    return 0;
+    //Find latest deadline for aperiodic task in the set
+    int max_deadline = this->getAper_tasks()->getDeadline();
+    for(int i = 1; i < this->getNum_aper_tasks(); i++){
+        if(this->getAper_tasks()[i].getDeadline() > max_deadline)
+            max_deadline = this->getAper_tasks()[i].getDeadline();
+    }
+    //Find multiple of LCM that is larger than last aperiodic deadline
+    int sched_len = lcm;
+    while(sched_len <= max_deadline){
+        sched_len+= lcm;
+    }
+    //After the last aperiodic task executes the tasks will enter a predictable pattern
+
+    return sched_len;
 }
 
 
-
-
+/**
+ * @brief PollingServer::calculate_lcm This function calculates the lcm of task periods.
+ * @param periods an array of the period refresh time of each periodic task within the polling server object.
+ * @param n the length of the periods array
+ * @return the lcm of the periods
+ */
 
 int PollingServer::calculate_lcm(int* periods, int n){
     int result = *periods;
