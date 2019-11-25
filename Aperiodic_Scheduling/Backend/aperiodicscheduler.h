@@ -34,9 +34,12 @@ public:
     PeriodicTask *getAlloted_server() const;
     void setAlloted_server(PeriodicTask *value);
 
+    int getAlloted_server_index() const;
+    void setAlloted_server_index(int value);
+
 private:
     int* schedule;
-    int schedule_length;
+    int schedule_length, alloted_server_index;
     int num_aper_tasks, num_per_tasks;
     bool scheduable;
     AperiodicTask* aper_tasks;

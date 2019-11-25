@@ -128,3 +128,13 @@ void AperiodicScheduler::setAlloted_server(PeriodicTask *value)
 {
     alloted_server = value;
 }
+
+int AperiodicScheduler::getAlloted_server_index() const
+{
+    return alloted_server_index;
+}
+
+void AperiodicScheduler::setAlloted_server_index(int value)
+{
+    alloted_server_index = value;
+}

@@ -24,7 +24,7 @@ int gcd(int a, int b);
  * This parameter indicates the length of the periodic task array
  */
 
-PollingServer::PollingServer(AperiodicTask* aper_tasks, PeriodicTask* per_tasks, int num_aper_tasks, int num_per_tasks)
+PollingServer::PollingServer(AperiodicTask* aper_tasks, PeriodicTask* per_tasks, int num_aper_tasks, int num_per_tasks, int alloted_server_index)
 {
     //Use Params to fill fields
     this->setAper_tasks(aper_tasks);
@@ -33,13 +33,12 @@ PollingServer::PollingServer(AperiodicTask* aper_tasks, PeriodicTask* per_tasks,
     this->setNum_aper_tasks(num_aper_tasks);
     this->setSchedule(nullptr);
     this->setScheduable(true);
-    this->setAlloted_server(&per_tasks[num_per_tasks-1]);
+    this->setAlloted_server(&per_tasks[alloted_server_index]);
+    this->setAlloted_server_index(alloted_server_index);
     //Use methods to fill fields
     this->perform_scheduability_test();
     this->produce_schedule();
     this->perform_scheduability_test();
-
-
 
 }
 
@@ -48,32 +47,99 @@ PollingServer::PollingServer(AperiodicTask* aper_tasks, PeriodicTask* per_tasks,
  * This function populates the schedule integer array with a correct schedule
  */
 void PollingServer::produce_schedule(){
+
     this->setScheduable(true);
 
     //Calculate Length of Schedule
     this->setSchedule_length(this->calculate_sched_len());
+
+    //Allocate memory for schedule
+    this->setSchedule((int*)malloc(sizeof(int)*this->getSchedule_length()));
+
+    //Initialize memory
+    for(int i = 0;  i < this->getSchedule_length(); i++){
+        this->getSchedule()[i] = -1;
+    }
+
+    //Create Aperiodic Task Queue
+    std::priority_queue<AperiodicTask, std::vector<AperiodicTask>, DeadlineComparator> aper_queue;
+
+    //Aperiodic task to be executed
+    AperiodicTask a_current;
+    //Flag for intialization
+    a_current.setReady_time(-1);
+
+    //Create flag to only execute one aperiodic task at a time
+    bool active_flag = false;
 
     //Runtime Scheduling Loop
     for(int time = 0; time < this->getSchedule_length(); time++){
 
         //Refresh Remaining CPU time for periodic tasks for period time
         for(int i = 0; i < this->getNum_per_tasks(); i++){
-            if(time == this->getPer_tasks()[i].getPeriod()){
+            if(time % this->getPer_tasks()[i].getPeriod() == 0){
                 this->getPer_tasks()[i].setRemaining_cpu_time(this->getPer_tasks()[i].getComputation_time());
             }
         }
 
         //Check Aperiodic FIFO Queue or Earliest deadline
         //I choose an EDF Heap pros: Prevents total system failure in more cases; cons: will result in later response time for some workloads.
-        //std::priority_queue<AperiodicTask, std::vector<AperiodicTask()>, DeadlineComparator> pq;
+        for(int i = 0; i < this->getNum_aper_tasks(); i++){
+            if(time == this->getAper_tasks()[i].getReady_time()){
+                aper_queue.push(this->getAper_tasks()[i]);
+            }
+        }
 
+        //Check at server instance for enqueued tasks
+        if(time % this->getAlloted_server()->getPeriod() == 0){
+            //If tasks in queue activate
+            if(!aper_queue.empty()){
+                active_flag = true;
+                this->getAlloted_server()->setRemaining_cpu_time(this->getAlloted_server()->getComputation_time());
+            }
+            else{
+                //No tasks in queue, so sleep allocated server
+                active_flag = false;
+                this->getAlloted_server()->setRemaining_cpu_time(0);
+            }
+         }
 
+        //Schedule task with closest period; Assuming periodic tasks are ordered in order of period
+        for(int i = 0; i < this->getNum_per_tasks(); i++){
+            //If Alloted Server Running
+            if(i == this->getAlloted_server_index() && this->getAlloted_server()->getRemaining_cpu_time() > 0){
+                //If tasks were enqueued
+                if(active_flag){
+                    //Check if a_current set
+                    if(a_current.getReady_time() == -1){
+                        a_current = aper_queue.top();
+                        aper_queue.pop();
+                    }
+                    //Run task
+                    this->getAlloted_server()->setRemaining_cpu_time(this->getAlloted_server()->getRemaining_cpu_time()-1);
+                    a_current.setRemaining_cpu_time(a_current.getRemaining_cpu_time()-1);
+                    this->getSchedule()[time] = this->getAlloted_server_index();
+                    if(a_current.getRemaining_cpu_time() == 0){
+                        a_current.setReady_time(-1);
+                        if(aper_queue.empty()){
+                            active_flag = false;
+                        }
+                    }
 
+                }
 
-        //Check if instance of Ts and Pop from queue or sleep
+            }
+            //Periodic Task running
+            else if(this->getPer_tasks()[i].getRemaining_cpu_time() > 0){
+                this->getSchedule()[time] = i;
+                this->getPer_tasks()[i].setRemaining_cpu_time(this->getPer_tasks()[i].getRemaining_cpu_time()-1);
+                break;
+            }
+            //Task Not Ran
+            else {
 
-        //Schedule with RMS convention
-
+            }
+        }
 
     }
 
@@ -95,6 +161,7 @@ void PollingServer::perform_scheduability_test(){
     }
 }
 
+//TODO Fix Scheduability Tests
 /**
  * @brief PollingServer::aperiodic_scheduability
  * Used by perform_scheduability_test() to populate the schedubale field.
@@ -112,9 +179,7 @@ bool PollingServer::aperiodic_scheduability(){
         //Ps + ceil(Ca/Cs)*Ps<=Da ==> Scheduling Guranteed
         int Da = ai.getDeadline();
         if(Ps + ceil_*Ps > Da){
-            //Perform Exact Analysis to confirm scheduability
-
-            return false;
+            return true;
         }
 
     }
@@ -133,8 +198,6 @@ bool PollingServer::periodic_scheduability(){
         ti = this->getPer_tasks()[i];
         sum_computation += ((double)ti.getComputation_time())/((double)ti.getPeriod());
     }
-    //printf("%f\n", sum_computation);
-    //printf("%f\n", this->getNum_per_tasks()*(pow(2.0, 1.0/this->getNum_per_tasks())-1));
     return (sum_computation <= this->getNum_per_tasks()*(pow(2.0, 1.0/this->getNum_per_tasks())-1));
 
 }

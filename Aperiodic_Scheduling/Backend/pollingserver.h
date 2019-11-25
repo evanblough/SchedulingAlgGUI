@@ -11,7 +11,7 @@
 class PollingServer : public AperiodicScheduler
 {
 public:
-    PollingServer(AperiodicTask* aper_tasks, PeriodicTask* per_tasks, int num_aper_tasks, int num_per_tasks);
+    PollingServer(AperiodicTask* aper_tasks, PeriodicTask* per_tasks, int num_aper_tasks, int num_per_tasks, int alloted_server_index);
     void produce_schedule();
     void perform_scheduability_test();
     bool aperiodic_scheduability();

@@ -15,8 +15,6 @@ bool BackendManualTestsPollingServer::results(PollingServer* ps, int len, int* s
     default:
         return false;
     case 0:
-       printf("Periodic Scheduability: %d\n",ps->periodic_scheduability());
-       printf("Expected: %d\n", expected);
        return ps->periodic_scheduability() == expected;
     case 1:
         return ps->aperiodic_scheduability() == expected;
@@ -64,7 +62,7 @@ void BackendManualTestsPollingServer::periodic_fail_one(){
     aper_tasks[2].setDeadline(30);
 
 
-    PollingServer* ps = new PollingServer(aper_tasks, per_tasks, 3, 1);
+    PollingServer* ps = new PollingServer(aper_tasks, per_tasks, 3, 1, 2);
     //Input Expected values
     bool expected[3];
     //Periodic Scheduability = True
@@ -79,7 +77,6 @@ void BackendManualTestsPollingServer::periodic_fail_one(){
         //Conver QString to const char *
         QByteArray ba = result_messages(i).toLocal8Bit();
         char* str = ba.data();
-        printf("i = %d\n", i);
         QVERIFY2(results(ps, 0, nullptr, expected[i], i), str);
         if(!ps->getScheduable() && i == 2){
             break;
@@ -112,24 +109,111 @@ void BackendManualTestsPollingServer::aperiodic_fail_one(){
     aper_tasks[2].setDeadline(30);
 
 
-    PollingServer* ps = new PollingServer(aper_tasks, per_tasks, 3, 1);
+    PollingServer* ps = new PollingServer(aper_tasks, per_tasks, 3, 1, 2);
     //Input Expected values
     bool expected[3];
     expected[0] = true;
-    expected[1] = false;
-    expected[2] = false;
+    expected[1] = true;
+    expected[2] = true;
 
-    //Verify that each test has passed
+//    //Verify that each test has passed
+//    for(int i = 0; i < 5; i++){
+//        //Conver QString to const char *
+//        QByteArray ba = result_messages(i).toLocal8Bit();
+//        char* str = ba.data();
+//        QVERIFY2(results(ps, 0, nullptr, expected[i], i), str);
+//        if(!ps->getScheduable() && i == 2){
+//            break;
+//        }
+//    }
+}
+
+void BackendManualTestsPollingServer::feasible_schedule_one(){
+    PeriodicTask per_workload[3];
+    AperiodicTask aper_workload[3];
+
+    //T1 = {1,4};
+    per_workload[0].setComputation_time(1);
+    per_workload[0].setRemaining_cpu_time(1);
+    per_workload[0].setPeriod(4);
+
+    //T2 = {1,8};
+    per_workload[1].setComputation_time(1);
+    per_workload[1].setRemaining_cpu_time(1);
+    per_workload[1].setPeriod(8);
+
+    //Ts = {3, 8}
+    per_workload[2].setComputation_time(3);
+    per_workload[2].setRemaining_cpu_time(3);
+    per_workload[2].setPeriod(8);
+
+    //A1 = {0,2,10}
+    aper_workload[0].setReady_time(0);
+    aper_workload[0].setComputation_time(2);
+    aper_workload[0].setRemaining_cpu_time(2);
+    aper_workload[0].setDeadline(10);
+
+    //A2 = {0,1,11}
+    aper_workload[1].setReady_time(0);
+    aper_workload[1].setComputation_time(1);
+    aper_workload[1].setRemaining_cpu_time(1);
+    aper_workload[1].setDeadline(11);
+
+    //A3 = {0, 2, 16}
+    aper_workload[2].setReady_time(0);
+    aper_workload[2].setComputation_time(2);
+    aper_workload[2].setRemaining_cpu_time(2);
+    aper_workload[2].setDeadline(16);
+
+    PollingServer* ps = new PollingServer(aper_workload, per_workload, 3, 3, 2);
+
+    bool expected [3];
+    expected[0] = true;
+    expected[1] = true;
+    expected[2] = true;
+
+    int expected_schedule[24];
+    expected_schedule[0] = 0;
+    expected_schedule[1] = 1;
+    expected_schedule[2] = 2;
+    expected_schedule[3] = 2;
+    expected_schedule[4] = 0;
+    expected_schedule[5] = 2;
+    expected_schedule[6] = -1;
+    expected_schedule[7] = -1;
+    expected_schedule[8] = 0;
+    expected_schedule[9] = 1;
+    expected_schedule[10] = 2;
+    expected_schedule[11] = 2;
+    expected_schedule[12] = 0;
+    expected_schedule[13] = -1;
+    expected_schedule[14] = -1;
+    expected_schedule[15] = -1;
+    expected_schedule[16] = 0;
+    expected_schedule[17] = 1;
+    expected_schedule[18] = -1;
+    expected_schedule[19] = -1;
+    expected_schedule[20] = 0;
+    expected_schedule[21] = -1;
+    expected_schedule[22] = -1;
+    expected_schedule[23] = -1;
+
+    //Verify Every Test has passed
     for(int i = 0; i < 5; i++){
         //Conver QString to const char *
         QByteArray ba = result_messages(i).toLocal8Bit();
         char* str = ba.data();
-        QVERIFY2(results(ps, 0, nullptr, expected[i], i), str);
+        QVERIFY2(results(ps, 24, expected_schedule, expected[i], i), str);
         if(!ps->getScheduable() && i == 2){
             break;
         }
     }
+
+
+
 }
+
+
 /**
  * @brief BackendManualTests::initTestCase Called before first test case. Left unpopulated because the manual unit tests
  * are just individual test cases, so they don't have a common starting point.

@@ -19,24 +19,10 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     MainWindow w;
     w.show();
-    AperiodicTask workload[7];
-    workload[0].setDeadline(10);
-    workload[1].setDeadline(5);
-    workload[2].setDeadline(5);
-    workload[3].setDeadline(8);
-    workload[4].setDeadline(9);
-    workload[5].setDeadline(4);
-    workload[6].setDeadline(6);
-    std::priority_queue<AperiodicTask, std::vector<AperiodicTask>, DeadlineComparator> pq;
+    BackendManualTestsPollingServer* bt = new BackendManualTestsPollingServer(nullptr);
+    QTest::qExec(bt);
 
-    for(int i = 0; i < 7; i++){
-        pq.push(workload[i]);
-    }
 
-    for(int i = 0; i < 7; i++){
-        printf("Pop %d: %d\n", i, pq.top().getDeadline());
-        pq.pop();
-    }
 
 
 
