@@ -119,6 +119,89 @@ void BackendManualTestsPollingServer::aperiodic_fail_one(){
 
 }
 
+void BackendManualTestsPollingServer::feasible_schedule_one(){
+    PeriodicTask per_workload[3];
+    AperiodicTask aper_workload[3];
+
+    //T1 = {1,4};
+    per_workload[0].setComputation_time(1);
+    per_workload[0].setRemaining_cpu_time(1);
+    per_workload[0].setPeriod(4);
+
+    //T2 = {1,8};
+    per_workload[1].setComputation_time(1);
+    per_workload[1].setRemaining_cpu_time(1);
+    per_workload[1].setPeriod(8);
+
+    //Ts = {3, 8}
+    per_workload[2].setComputation_time(3);
+    per_workload[2].setRemaining_cpu_time(3);
+    per_workload[2].setPeriod(8);
+
+    //A1 = {0,2,10}
+    aper_workload[0].setReady_time(0);
+    aper_workload[0].setComputation_time(2);
+    aper_workload[0].setRemaining_cpu_time(2);
+    aper_workload[0].setDeadline(10);
+
+    //A2 = {0,1,11}
+    aper_workload[1].setReady_time(0);
+    aper_workload[1].setComputation_time(1);
+    aper_workload[1].setRemaining_cpu_time(1);
+    aper_workload[1].setDeadline(11);
+
+    //A3 = {0, 2, 16}
+    aper_workload[2].setReady_time(0);
+    aper_workload[2].setComputation_time(2);
+    aper_workload[2].setRemaining_cpu_time(2);
+    aper_workload[2].setDeadline(16);
+
+    PollingServer* ps = new PollingServer(aper_workload, per_workload, 3, 3, 2);
+
+    bool expected [3];
+    expected[0] = true;
+    expected[1] = true;
+    expected[2] = true;
+
+    //God forgive me for this
+    int expected_schedule[24];
+    expected_schedule[0] = 0;
+    expected_schedule[1] = 1;
+    expected_schedule[2] = 2;
+    expected_schedule[3] = 2;
+    expected_schedule[4] = 0;
+    expected_schedule[5] = 2;
+    expected_schedule[6] = -1;
+    expected_schedule[7] = -1;
+    expected_schedule[8] = 0;
+    expected_schedule[9] = 1;
+    expected_schedule[10] = 2;
+    expected_schedule[11] = 2;
+    expected_schedule[12] = 0;
+    expected_schedule[13] = -1;
+    expected_schedule[14] = -1;
+    expected_schedule[15] = -1;
+    expected_schedule[16] = 0;
+    expected_schedule[17] = 1;
+    expected_schedule[18] = -1;
+    expected_schedule[19] = -1;
+    expected_schedule[20] = 0;
+    expected_schedule[21] = -1;
+    expected_schedule[22] = -1;
+    expected_schedule[23] = -1;
+
+    //Verify Every Test has passed
+    for(int i = 0; i < 5; i++){
+        //Conver QString to const char *
+        QByteArray ba = result_messages(i).toLocal8Bit();
+        char* str = ba.data();
+        QVERIFY2(results(ps, 24, expected_schedule, expected[i], i), str);
+        if(!ps->getScheduable() && i == 2){
+            break;
+        }
+    }
+}
+
 void BackendManualTestsPollingServer::feasible_schedule_two(){
     PeriodicTask per_workload[4];
     AperiodicTask aper_workload[7];
@@ -311,71 +394,76 @@ void BackendManualTestsPollingServer::feasible_schedule_two(){
 
 }
 
-void BackendManualTestsPollingServer::feasible_schedule_one(){
+void BackendManualTestsPollingServer::feasible_schedule_three(){
     PeriodicTask per_workload[3];
-    AperiodicTask aper_workload[3];
+    AperiodicTask aper_workload[4];
 
-    //T1 = {1,4};
+    //T0 = {1,4};
     per_workload[0].setComputation_time(1);
     per_workload[0].setRemaining_cpu_time(1);
     per_workload[0].setPeriod(4);
 
-    //T2 = {1,8};
-    per_workload[1].setComputation_time(1);
-    per_workload[1].setRemaining_cpu_time(1);
+    //TS = {2,8};
+    per_workload[1].setComputation_time(2);
+    per_workload[1].setRemaining_cpu_time(2);
     per_workload[1].setPeriod(8);
 
-    //Ts = {3, 8}
+    //T2 = {3,12};
     per_workload[2].setComputation_time(3);
     per_workload[2].setRemaining_cpu_time(3);
-    per_workload[2].setPeriod(8);
+    per_workload[2].setPeriod(12);
 
-    //A1 = {0,2,10}
+    //A0 = {0,3,24}
     aper_workload[0].setReady_time(0);
-    aper_workload[0].setComputation_time(2);
-    aper_workload[0].setRemaining_cpu_time(2);
-    aper_workload[0].setDeadline(10);
+    aper_workload[0].setComputation_time(3);
+    aper_workload[0].setRemaining_cpu_time(3);
+    aper_workload[0].setDeadline(23);
 
-    //A2 = {0,1,11}
+    //A1 = {0,1,16}
     aper_workload[1].setReady_time(0);
     aper_workload[1].setComputation_time(1);
     aper_workload[1].setRemaining_cpu_time(1);
-    aper_workload[1].setDeadline(11);
+    aper_workload[1].setDeadline(16);
 
-    //A3 = {0, 2, 16}
+    //A2 = {0,1,20}
     aper_workload[2].setReady_time(0);
-    aper_workload[2].setComputation_time(2);
-    aper_workload[2].setRemaining_cpu_time(2);
-    aper_workload[2].setDeadline(16);
+    aper_workload[2].setComputation_time(1);
+    aper_workload[2].setRemaining_cpu_time(1);
+    aper_workload[2].setDeadline(20);
 
-    PollingServer* ps = new PollingServer(aper_workload, per_workload, 3, 3, 2);
+    //A3 = {0,1,22}
+    aper_workload[3].setReady_time(0);
+    aper_workload[3].setComputation_time(1);
+    aper_workload[3].setRemaining_cpu_time(1);
+    aper_workload[3].setDeadline(22);
+
+    PollingServer* ps = new PollingServer(aper_workload, per_workload, 4, 3, 1);
 
     bool expected [3];
     expected[0] = true;
     expected[1] = true;
     expected[2] = true;
 
-    //God forgive me for this
     int expected_schedule[24];
     expected_schedule[0] = 0;
     expected_schedule[1] = 1;
-    expected_schedule[2] = 2;
+    expected_schedule[2] = 1;
     expected_schedule[3] = 2;
     expected_schedule[4] = 0;
     expected_schedule[5] = 2;
-    expected_schedule[6] = -1;
+    expected_schedule[6] = 2;
     expected_schedule[7] = -1;
     expected_schedule[8] = 0;
     expected_schedule[9] = 1;
-    expected_schedule[10] = 2;
-    expected_schedule[11] = 2;
+    expected_schedule[10] = 1;
+    expected_schedule[11] = -1;
     expected_schedule[12] = 0;
-    expected_schedule[13] = -1;
-    expected_schedule[14] = -1;
-    expected_schedule[15] = -1;
+    expected_schedule[13] = 2;
+    expected_schedule[14] = 2;
+    expected_schedule[15] = 2;
     expected_schedule[16] = 0;
     expected_schedule[17] = 1;
-    expected_schedule[18] = -1;
+    expected_schedule[18] = 1;
     expected_schedule[19] = -1;
     expected_schedule[20] = 0;
     expected_schedule[21] = -1;
