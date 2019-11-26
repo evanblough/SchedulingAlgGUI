@@ -21,6 +21,7 @@ SOURCES += \
     Backend/aperiodicscheduler.cpp \
     Backend/aperiodictask.cpp \
     Backend/deadlinecomparator.cpp \
+    Backend/defferableserver.cpp \
     Backend/periodictask.cpp \
     Backend/pollingserver.cpp \
     Frontend/graphdisplay.cpp \
@@ -32,6 +33,7 @@ HEADERS += \
     Backend/aperiodicscheduler.h \
     Backend/aperiodictask.h \
     Backend/deadlinecomparator.h \
+    Backend/defferableserver.h \
     Backend/periodictask.h \
     Backend/pollingserver.h \
     Frontend/graphdisplay.h \

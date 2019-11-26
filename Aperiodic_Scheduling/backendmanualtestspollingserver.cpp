@@ -36,6 +36,7 @@ bool BackendManualTestsPollingServer::results(PollingServer* ps, int len, int* s
     case 5:
         for(int i = 0; i < ps->getNum_aper_tasks(); i++){
             if(finish_times[i] != ps->getAper_tasks()[i].getFinish_time()){
+                printf("Expected: %d, Actual %d\n", finish_times[i], ps->getAper_tasks()[i].getFinish_time());
                 return false;
             }
         }
@@ -176,7 +177,7 @@ void BackendManualTestsPollingServer::feasible_schedule_one(){
     expected[1] = true;
     expected[2] = true;
 
-    //God forgive me for this
+
     int expected_schedule[24];
     expected_schedule[0] = 0;
     expected_schedule[1] = 1;
@@ -209,7 +210,7 @@ void BackendManualTestsPollingServer::feasible_schedule_one(){
     finish_times[2] = 12;
 
     //Verify Every Test has passed
-    for(int i = 0; i < 5; i++){
+    for(int i = 0; i < 6; i++){
         //Conver QString to const char *
         QByteArray ba = result_messages(i).toLocal8Bit();
         char* str = ba.data();
@@ -403,17 +404,17 @@ void BackendManualTestsPollingServer::feasible_schedule_two(){
     expected_schedule[99] = -1;
 
     int finish_times[7];
-    finish_times[0] = 8;
-    finish_times[1] = 18;
-    finish_times[2] = 28;
-    finish_times[3] = 36;
-    finish_times[4] = 39;
-    finish_times[5] = 47;
-    finish_times[6] = 49;
+    finish_times[0] = 14;
+    finish_times[1] = 24;
+    finish_times[2] = 34;
+    finish_times[3] = 42;
+    finish_times[4] = 45;
+    finish_times[5] = 53;
+    finish_times[6] = 62;
 
 
     //Verify Every Test has passed
-    for(int i = 0; i < 5; i++){
+    for(int i = 0; i < 6; i++){
         //Conver QString to const char *
         QByteArray ba = result_messages(i).toLocal8Bit();
         char* str = ba.data();
@@ -507,14 +508,14 @@ void BackendManualTestsPollingServer::feasible_schedule_three(){
     expected_schedule[22] = -1;
     expected_schedule[23] = -1;
 
-    int finish_times[7];
+    int finish_times[4];
     finish_times[0] = 19;
     finish_times[1] = 2;
     finish_times[2] = 3;
     finish_times[3] = 10;
 
     //Verify Every Test has passed
-    for(int i = 0; i < 5; i++){
+    for(int i = 0; i < 6; i++){
         //Conver QString to const char *
         QByteArray ba = result_messages(i).toLocal8Bit();
         char* str = ba.data();

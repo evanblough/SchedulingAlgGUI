@@ -50,6 +50,11 @@ void PollingServer::produce_schedule(){
 
     this->setScheduable(true);
 
+    //Initialize Finish Times
+    for(int i = 0; i < this->getNum_aper_tasks(); i++){
+        this->getAper_tasks()[i].setFinish_time(-1);
+    }
+
     //Calculate Length of Schedule
     this->setSchedule_length(this->calculate_sched_len());
 
@@ -155,6 +160,18 @@ void PollingServer::produce_schedule(){
 
     }
 
+    //Post-Run Scheduability Analysis for Aperiodic tasks
+    for(int i = 0; i < this->getNum_aper_tasks(); i++){
+        //If task finished before its deadline
+        if(this->getAper_tasks()[i].getFinish_time() > this->getAper_tasks()[i].getDeadline()){
+            this->setScheduable(false);
+        }
+        //If task never finished
+        if(this->getAper_tasks()[i].getFinish_time() == -1){
+            this->setScheduable(false);
+        }
+    }
+
 
 
 
@@ -173,7 +190,7 @@ void PollingServer::perform_scheduability_test(){
     }
 }
 
-//TODO Fix Scheduability Tests
+//TODO Remove Aperiodic Scheduability Tests
 /**
  * @brief PollingServer::aperiodic_scheduability
  * Used by perform_scheduability_test() to populate the schedubale field.
