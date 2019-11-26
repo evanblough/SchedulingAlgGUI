@@ -21,7 +21,7 @@ private slots:
     void init();
     void cleanup();
 private:
-    bool results(PollingServer* ps, int len, int* sched, bool expected, int i);
+    bool results(PollingServer* ps, int len, int* sched, bool expected, int i, int* finish_times);
     QString result_messages(int i);
 
 };

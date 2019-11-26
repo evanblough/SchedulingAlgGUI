@@ -98,12 +98,14 @@ void PollingServer::produce_schedule(){
                 active_flag = true;
                 this->getAlloted_server()->setRemaining_cpu_time(this->getAlloted_server()->getComputation_time());
             }
+            //Specific branch to catch an edge case where the last task in the queue
+            //needs the remaining_cpu_time for the alloted server to refresh in order to finish
             else if (aper_queue.empty() && a_current.getRemaining_cpu_time() > 0){
                 active_flag = true;
                 this->getAlloted_server()->setRemaining_cpu_time(this->getAlloted_server()->getComputation_time());
             }
+            //No tasks in queue, so sleep allocated server
             else{
-                //No tasks in queue, so sleep allocated server
                 active_flag = false;
                 this->getAlloted_server()->setRemaining_cpu_time(0);
             }
@@ -115,7 +117,8 @@ void PollingServer::produce_schedule(){
             if(i == this->getAlloted_server_index() && this->getAlloted_server()->getRemaining_cpu_time() > 0){
                 //If tasks were enqueued
                 if(active_flag){
-                    //Check if a_current set
+                    //Check if a_current set I have to use this because the STL library will only
+                    //give me read only acess to tasks in the deadline queue
                     if(a_current.getReady_time() == -1){
                         a_current = aper_queue.top();
                         aper_queue.pop();
@@ -124,7 +127,10 @@ void PollingServer::produce_schedule(){
                     this->getAlloted_server()->setRemaining_cpu_time(this->getAlloted_server()->getRemaining_cpu_time()-1);
                     a_current.setRemaining_cpu_time(a_current.getRemaining_cpu_time()-1);
                     this->getSchedule()[time] = this->getAlloted_server_index();
+                    //If no more tasks are enqueue sleep the server
                     if(a_current.getRemaining_cpu_time() == 0){
+                        //Set Finish Time
+                        this->getAper_tasks()[a_current.getIndex()].setFinish_time(time + 1);
                         a_current.setReady_time(-1);
                         if(aper_queue.empty()){
                             active_flag = false;

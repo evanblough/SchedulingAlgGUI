@@ -8,13 +8,14 @@
  * @param c The number of clock cycles a task needs to complete its computations.
  * @param d The absolute deadline that indicates when this task needs to be completed to fulfill hard real-time constraints.
  */
-AperiodicTask::AperiodicTask(int r, int c, int d)
+AperiodicTask::AperiodicTask(int r, int c, int d, int index)
 {
     this->setDeadline(d);
     this->setReady_time(r);
     this->setComputation_time(c);
     this->setRemaining_cpu_time(c);
     this->setFinish_time(0);
+    this->setIndex(index);
 }
 
 /**
@@ -113,4 +114,14 @@ int AperiodicTask::getFinish_time() const
 void AperiodicTask::setFinish_time(int value)
 {
     finish_time = value;
+}
+
+int AperiodicTask::getIndex() const
+{
+    return index;
+}
+
+void AperiodicTask::setIndex(int value)
+{
+    index = value;
 }

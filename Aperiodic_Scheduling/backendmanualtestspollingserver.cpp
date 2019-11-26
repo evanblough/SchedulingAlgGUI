@@ -10,7 +10,7 @@ BackendManualTestsPollingServer::BackendManualTestsPollingServer(QObject* parent
 
 }
 
-bool BackendManualTestsPollingServer::results(PollingServer* ps, int len, int* sched, bool expected, int i){
+bool BackendManualTestsPollingServer::results(PollingServer* ps, int len, int* sched, bool expected, int i, int* finish_times){
     switch (i){
     default:
         return false;
@@ -23,7 +23,7 @@ bool BackendManualTestsPollingServer::results(PollingServer* ps, int len, int* s
         return  ps->getScheduable() == expected;
     case 3:
         return len == ps->getSchedule_length();
-    case 4:
+    case 4: {
         int *actual_sched = ps->getSchedule();
         for(int i = 0; i < len; i++){
             if (*(sched+i) != *(actual_sched+i)){
@@ -32,6 +32,16 @@ bool BackendManualTestsPollingServer::results(PollingServer* ps, int len, int* s
             }
         }
         return true;
+    }
+    case 5:
+        for(int i = 0; i < ps->getNum_aper_tasks(); i++){
+            if(finish_times[i] != ps->getAper_tasks()[i].getFinish_time()){
+                return false;
+            }
+        }
+        return true;
+
+
      }
 
 }
@@ -138,23 +148,26 @@ void BackendManualTestsPollingServer::feasible_schedule_one(){
     per_workload[2].setRemaining_cpu_time(3);
     per_workload[2].setPeriod(8);
 
-    //A1 = {0,2,10}
+    //A0 = {0,2,10}
     aper_workload[0].setReady_time(0);
     aper_workload[0].setComputation_time(2);
     aper_workload[0].setRemaining_cpu_time(2);
     aper_workload[0].setDeadline(10);
+    aper_workload[0].setIndex(0);
 
-    //A2 = {0,1,11}
+    //A1 = {0,1,11}
     aper_workload[1].setReady_time(0);
     aper_workload[1].setComputation_time(1);
     aper_workload[1].setRemaining_cpu_time(1);
     aper_workload[1].setDeadline(11);
+    aper_workload[1].setIndex(1);
 
-    //A3 = {0, 2, 16}
+    //A2 = {0, 2, 16}
     aper_workload[2].setReady_time(0);
     aper_workload[2].setComputation_time(2);
     aper_workload[2].setRemaining_cpu_time(2);
     aper_workload[2].setDeadline(16);
+    aper_workload[2].setIndex(2);
 
     PollingServer* ps = new PollingServer(aper_workload, per_workload, 3, 3, 2);
 
@@ -190,12 +203,17 @@ void BackendManualTestsPollingServer::feasible_schedule_one(){
     expected_schedule[22] = -1;
     expected_schedule[23] = -1;
 
+    int finish_times[3];
+    finish_times[0] = 4;
+    finish_times[1] = 6;
+    finish_times[2] = 12;
+
     //Verify Every Test has passed
     for(int i = 0; i < 5; i++){
         //Conver QString to const char *
         QByteArray ba = result_messages(i).toLocal8Bit();
         char* str = ba.data();
-        QVERIFY2(results(ps, 24, expected_schedule, expected[i], i), str);
+        QVERIFY2(results(ps, 24, expected_schedule, expected[i], i, finish_times), str);
         if(!ps->getScheduable() && i == 2){
             break;
         }
@@ -231,42 +249,49 @@ void BackendManualTestsPollingServer::feasible_schedule_two(){
     aper_workload[0].setComputation_time(3);
     aper_workload[0].setRemaining_cpu_time(3);
     aper_workload[0].setDeadline(20);
+    aper_workload[0].setIndex(0);
 
     //A1 = {5,4,30}
     aper_workload[1].setReady_time(5);
     aper_workload[1].setComputation_time(4);
     aper_workload[1].setRemaining_cpu_time(4);
     aper_workload[1].setDeadline(30);
+    aper_workload[1].setIndex(1);
 
     //A2 = {6, 4, 40}
     aper_workload[2].setReady_time(6);
     aper_workload[2].setComputation_time(4);
     aper_workload[2].setRemaining_cpu_time(4);
     aper_workload[2].setDeadline(40);
+    aper_workload[2].setIndex(2);
 
     //A3 = {18, 2, 60}
     aper_workload[3].setReady_time(18);
     aper_workload[3].setComputation_time(2);
     aper_workload[3].setRemaining_cpu_time(2);
     aper_workload[3].setDeadline(60);
+    aper_workload[3].setIndex(3);
 
     //A4 = {25, 3, 75}
     aper_workload[4].setReady_time(25);
     aper_workload[4].setComputation_time(3);
     aper_workload[4].setRemaining_cpu_time(3);
     aper_workload[4].setDeadline(75);
+    aper_workload[4].setIndex(4);
 
     //A5 = {32, 2, 87}
     aper_workload[5].setReady_time(32);
     aper_workload[5].setComputation_time(2);
     aper_workload[5].setRemaining_cpu_time(2);
     aper_workload[5].setDeadline(87);
+    aper_workload[5].setIndex(5);
 
     //A6 = {49, 3, 95}
     aper_workload[6].setReady_time(49);
     aper_workload[6].setComputation_time(3);
     aper_workload[6].setRemaining_cpu_time(3);
     aper_workload[6].setDeadline(95);
+    aper_workload[6].setIndex(6);
 
     PollingServer* ps = new PollingServer(aper_workload, per_workload, 7, 4, 1);
 
@@ -377,6 +402,14 @@ void BackendManualTestsPollingServer::feasible_schedule_two(){
     expected_schedule[98] = -1;
     expected_schedule[99] = -1;
 
+    int finish_times[7];
+    finish_times[0] = 8;
+    finish_times[1] = 18;
+    finish_times[2] = 28;
+    finish_times[3] = 36;
+    finish_times[4] = 39;
+    finish_times[5] = 47;
+    finish_times[6] = 49;
 
 
     //Verify Every Test has passed
@@ -384,7 +417,7 @@ void BackendManualTestsPollingServer::feasible_schedule_two(){
         //Conver QString to const char *
         QByteArray ba = result_messages(i).toLocal8Bit();
         char* str = ba.data();
-        QVERIFY2(results(ps, 100, expected_schedule, expected[i], i), str);
+        QVERIFY2(results(ps, 100, expected_schedule, expected[i], i, finish_times), str);
         if(!ps->getScheduable() && i == 2){
             break;
         }
@@ -418,24 +451,28 @@ void BackendManualTestsPollingServer::feasible_schedule_three(){
     aper_workload[0].setComputation_time(3);
     aper_workload[0].setRemaining_cpu_time(3);
     aper_workload[0].setDeadline(23);
+    aper_workload[0].setIndex(0);
 
     //A1 = {0,1,16}
     aper_workload[1].setReady_time(0);
     aper_workload[1].setComputation_time(1);
     aper_workload[1].setRemaining_cpu_time(1);
     aper_workload[1].setDeadline(16);
+    aper_workload[1].setIndex(1);
 
     //A2 = {0,1,20}
     aper_workload[2].setReady_time(0);
     aper_workload[2].setComputation_time(1);
     aper_workload[2].setRemaining_cpu_time(1);
     aper_workload[2].setDeadline(20);
+    aper_workload[2].setIndex(2);
 
     //A3 = {0,1,22}
     aper_workload[3].setReady_time(0);
     aper_workload[3].setComputation_time(1);
     aper_workload[3].setRemaining_cpu_time(1);
     aper_workload[3].setDeadline(22);
+    aper_workload[3].setIndex(3);
 
     PollingServer* ps = new PollingServer(aper_workload, per_workload, 4, 3, 1);
 
@@ -470,12 +507,18 @@ void BackendManualTestsPollingServer::feasible_schedule_three(){
     expected_schedule[22] = -1;
     expected_schedule[23] = -1;
 
+    int finish_times[7];
+    finish_times[0] = 19;
+    finish_times[1] = 2;
+    finish_times[2] = 3;
+    finish_times[3] = 10;
+
     //Verify Every Test has passed
     for(int i = 0; i < 5; i++){
         //Conver QString to const char *
         QByteArray ba = result_messages(i).toLocal8Bit();
         char* str = ba.data();
-        QVERIFY2(results(ps, 24, expected_schedule, expected[i], i), str);
+        QVERIFY2(results(ps, 24, expected_schedule, expected[i], i, finish_times), str);
         if(!ps->getScheduable() && i == 2){
             break;
         }
@@ -516,8 +559,10 @@ QString BackendManualTestsPollingServer::result_messages(int i){
         return "Schedule length varied.";
     case 4:
         return "Schedule contents varied.";
+    case 5:
+        return "Aperiodic Finish Times were not correct.";
     default:
-        return "Error only values of i supplied should be 0-4";
+        return "Error only values of i supplied should be 0-5";
 
     }
 

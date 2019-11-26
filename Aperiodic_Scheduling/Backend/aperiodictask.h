@@ -7,7 +7,7 @@ class AperiodicTask
 {
 public:
     AperiodicTask(){}
-    AperiodicTask(int r, int c, int d);
+    AperiodicTask(int r, int c, int d, int index);
 
     int getComputation_time() const;
     void setComputation_time(int value);
@@ -24,8 +24,11 @@ public:
     int getFinish_time() const;
     void setFinish_time(int value);
 
+    int getIndex() const;
+    void setIndex(int value);
+
 private:
-    int computation_time, remaining_cpu_time, deadline, ready_time, finish_time;
+    int computation_time, remaining_cpu_time, deadline, ready_time, finish_time, index;
 
 };
 
