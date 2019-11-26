@@ -15,6 +15,7 @@ private slots:
     void aperiodic_fail_one();
     void periodic_fail_one();
     void feasible_schedule_one();
+    void feasible_schedule_two();
     void initTestCase();
     void init();
     void cleanup();

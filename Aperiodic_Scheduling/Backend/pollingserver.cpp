@@ -68,6 +68,7 @@ void PollingServer::produce_schedule(){
     AperiodicTask a_current;
     //Flag for intialization
     a_current.setReady_time(-1);
+    a_current.setRemaining_cpu_time(0);
 
     //Create flag to only execute one aperiodic task at a time
     bool active_flag = false;
@@ -94,6 +95,10 @@ void PollingServer::produce_schedule(){
         if(time % this->getAlloted_server()->getPeriod() == 0){
             //If tasks in queue activate
             if(!aper_queue.empty()){
+                active_flag = true;
+                this->getAlloted_server()->setRemaining_cpu_time(this->getAlloted_server()->getComputation_time());
+            }
+            else if (aper_queue.empty() && a_current.getRemaining_cpu_time() > 0){
                 active_flag = true;
                 this->getAlloted_server()->setRemaining_cpu_time(this->getAlloted_server()->getComputation_time());
             }
@@ -125,6 +130,7 @@ void PollingServer::produce_schedule(){
                             active_flag = false;
                         }
                     }
+                    break;
 
                 }
 
