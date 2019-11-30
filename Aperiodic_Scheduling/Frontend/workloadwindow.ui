@@ -29,42 +29,42 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="pushButton_2">
+    <widget class="QPushButton" name="file_input_button">
      <property name="text">
       <string>File Input</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="pushButton">
+    <widget class="QPushButton" name="manual_input">
      <property name="text">
       <string>Manual Input</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QPlainTextEdit" name="plainTextEdit">
+    <widget class="QPlainTextEdit" name="aperiodic_filename">
      <property name="placeholderText">
       <string>Aperiodic Workload Absolute Filepath:</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QPlainTextEdit" name="plainTextEdit_2">
+    <widget class="QPlainTextEdit" name="periodic_filename">
      <property name="placeholderText">
       <string>Periodic Workload Absolute Filepath:</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QPlainTextEdit" name="plainTextEdit_3">
+    <widget class="QPlainTextEdit" name="num_aper_tasks">
      <property name="placeholderText">
       <string>Number of Aperiodic Tasks:</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QPlainTextEdit" name="plainTextEdit_4">
+    <widget class="QPlainTextEdit" name="num_aper_tasks_2">
      <property name="placeholderText">
       <string>Number of Periodic Tasks:</string>
      </property>

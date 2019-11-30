@@ -29,6 +29,7 @@ SOURCES += \
     Frontend/graphdisplay.cpp \
     Frontend/workloadwindow.cpp \
     backendmanualtestspollingserver.cpp \
+    controller.cpp \
     main.cpp \
     mainwindow.cpp \
 
@@ -44,6 +45,7 @@ HEADERS += \
     Frontend/graphdisplay.h \
     Frontend/workloadwindow.h \
     backendmanualtestspollingserver.h \
+    controller.h \
     mainwindow.h \
 
 FORMS += \
