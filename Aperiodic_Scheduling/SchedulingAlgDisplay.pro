@@ -25,6 +25,7 @@ SOURCES += \
     Backend/periodictask.cpp \
     Backend/pollingserver.cpp \
     Frontend/graphdisplay.cpp \
+    Frontend/workloadwindow.cpp \
     backendmanualtestspollingserver.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -37,10 +38,12 @@ HEADERS += \
     Backend/periodictask.h \
     Backend/pollingserver.h \
     Frontend/graphdisplay.h \
+    Frontend/workloadwindow.h \
     backendmanualtestspollingserver.h \
     mainwindow.h \
 
 FORMS += \
+    Frontend/workloadwindow.ui \
     mainwindow.ui \
 
 # Default rules for deployment.

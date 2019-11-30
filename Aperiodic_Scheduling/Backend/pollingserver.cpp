@@ -5,6 +5,7 @@
 #include <vector>
 #include <iostream>
 #include "Backend/deadlinecomparator.h"
+#include "defferableserver.h"
 
 int gcd(int a, int b);
 
@@ -280,12 +281,12 @@ int PollingServer::calculate_lcm(int* periods, int n){
 
 }
 
-int gcd(int a, int b){
-    if (b == 0)
-        return a;
+//int gcd(int a, int b){
+//    if (b == 0)
+//        return a;
 
-    return gcd(b, a % b);
-}
+//    return gcd(b, a % b);
+//}
 
 
 

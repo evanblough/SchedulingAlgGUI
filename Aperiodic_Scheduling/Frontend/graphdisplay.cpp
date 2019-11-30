@@ -23,14 +23,21 @@ void GraphDisplay::paintEvent(QPaintEvent *event)
     //Assign Colors to tasks
     QColor task_colors[num_tasks];
     for(int i =0; i < num_tasks; i++){
-        if(i % 3 == 0){
-            task_colors[i] = Qt::red;
+        if(i % 4 == 0){
+            //Light Blue
+            task_colors[i].setNamedColor("#BFFBFF");
         }
-        else if(i % 3 == 1){
-            task_colors[i] = Qt::blue;
+        else if(i % 4 == 1){
+            //Teal
+            task_colors[i].setNamedColor("#1FCBFF");
+        }
+        else if (i % 4 == 2){
+            //Carolina Blue
+            task_colors[i].setNamedColor("#2B95FF");
         }
         else{
-            task_colors[i] = Qt::green;
+            //Dark Blue
+            task_colors[i].setNamedColor("#3414FF");
         }
 
     }
@@ -64,15 +71,17 @@ void GraphDisplay::draw_timeline(int box_width, int box_height, int linewidth, i
     QPainter painter(this);
     char index[end_time - start_time];
     //Draw Horizontal Line
-    painter.setPen(Qt::black);
-    painter.drawLine(0, box_height - height, box_width, box_height - height);
+    painter.setPen(*new QColor("#e4edf5"));
+    painter.drawLine(0, box_height -1, box_width, box_height-1);
+    painter.drawLine(0, 0, box_width, 0);
+    painter.drawLine(box_width - 1, 0, box_width - 1, box_height);
     painter.drawLine(0, box_height - height/2, box_width, box_height - height/2);
-    //Draw Hashes
 
-    for(int i = 1; i < box_width/width; i++){
+    //Draw Hashes
+    for(int i = 0; i < box_width/width; i++){
         painter.drawLine(i*width, 0, i*width, box_height);
         sprintf(index, "%d", start_time + i);
-        painter.drawText(i*width + 5, box_height - height/4*3, index);
+        painter.drawText(i*width + 5, box_height - height/4, index);
     }
 
 
