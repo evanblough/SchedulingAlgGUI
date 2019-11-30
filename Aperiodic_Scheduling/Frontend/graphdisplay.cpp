@@ -2,7 +2,7 @@
 #include "QPainter"
 #include "QPaintEvent"
 
-GraphDisplay::GraphDisplay(QWidget *parent, int *schedule, int sched_len, int num_tasks, int wscale, int vscale) : QWidget(parent)
+GraphDisplay::GraphDisplay(QWidget *parent, int *schedule, int sched_len, int num_tasks, int wscale, int vscale, int zoom) : QWidget(parent)
 {
     this->schedule = schedule;
     this->sched_len = sched_len;
@@ -10,6 +10,7 @@ GraphDisplay::GraphDisplay(QWidget *parent, int *schedule, int sched_len, int nu
     this->wscale = wscale;
     this->vscale = vscale;
     this->update();
+    this->zoom = zoom;
 
 }
 
@@ -17,8 +18,12 @@ GraphDisplay::GraphDisplay(QWidget *parent, int *schedule, int sched_len, int nu
 void GraphDisplay::paintEvent(QPaintEvent *event)
 {
 
-    int width = event->rect().width() /wscale;
-    int height = event->rect().height() / vscale ;
+    int width = 3*zoom/wscale;
+    int height = zoom/vscale;
+
+    //Clear screen before new drawing
+    QPainter qp(this);
+    qp.eraseRect(event->rect());
 
     //Assign Colors to tasks
     QColor task_colors[num_tasks];
@@ -50,8 +55,11 @@ void GraphDisplay::paintEvent(QPaintEvent *event)
                 draw_textbox(i*width, *(schedule+i)*height, width, height, task_colors[*(schedule+i)], Qt::black, task_name);
             }
     }
+
+
     //Create Timeline
-    draw_timeline(event->rect().width(), event->rect().height(), 1, width, height, 0, sched_len);
+    draw_timeline(3*zoom, zoom, 1, width, height, 0, sched_len);
+    fflush(stdout);
 
 
 }
@@ -78,14 +86,12 @@ void GraphDisplay::draw_timeline(int box_width, int box_height, int linewidth, i
     painter.drawLine(0, box_height - height/2, box_width, box_height - height/2);
 
     //Draw Hashes
-    for(int i = 0; i < box_width/width; i++){
+    for(int i = 0; i < end_time - start_time; i++){
         painter.drawLine(i*width, 0, i*width, box_height);
         sprintf(index, "%d", start_time + i);
         painter.drawText(i*width + 5, box_height - height/4, index);
     }
 
-
-
-
-
 }
+
+

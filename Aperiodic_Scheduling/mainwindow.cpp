@@ -8,6 +8,7 @@ MainWindow::MainWindow(QWidget* parent, QWidget* schedule_panel, QWidget* worklo
     ui->setupUi(this);
     ui->scrollArea->setWidget(schedule_panel);
     ui->scrollArea_2->setWidget(workload_panel);
+    ui->scrollArea_3->setWidget(analysis_panel);
     schedule_panel->show();
     workload_panel->show();
 

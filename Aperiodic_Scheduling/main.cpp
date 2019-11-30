@@ -14,6 +14,7 @@
 #include <vector>
 #include <bits/stdc++.h>
 #include "Frontend/workloadwindow.h"
+#include "Frontend/analysiswindow.h"
 
 int main(int argc, char *argv[])
 {
@@ -60,7 +61,7 @@ int main(int argc, char *argv[])
 
     PollingServer* ps = new PollingServer(aper_workload, per_workload, 3, 3, 2);
     printf("%d\n", ps->getSchedule_length());
-    GraphDisplay* g = new GraphDisplay(nullptr, ps->getSchedule(), ps->getSchedule_length(), ps->getNum_per_tasks(), ps->getSchedule_length(), 10);
+    GraphDisplay* g = new GraphDisplay(nullptr, ps->getSchedule(), ps->getSchedule_length(), ps->getNum_per_tasks(), ps->getSchedule_length(), ps->getNum_per_tasks() + 1, 500);
     QColor colors[7];
     colors[0].setNamedColor("#BFFBFF"); //Pale Blue
     colors[1].setNamedColor("#1FCBFF"); //Teal
@@ -70,17 +71,20 @@ int main(int argc, char *argv[])
     colors[5].setNamedColor("#065951"); //Dark Teal
     colors[6].setNamedColor("#292629"); //Dark Grey
 
-
+    g->setFixedSize(3000, 1000);
 
     QPalette* palette = new QPalette(colors[1], colors[6], colors[0], colors[5], colors[2], colors[0], colors[6]);
     g->setPalette(*palette);
 
+    AnalysisWindow* aw = new AnalysisWindow();
+
     WorkloadWindow* ww = new WorkloadWindow();
     ww->setPalette(*palette);
 
-    MainWindow* w = new MainWindow(nullptr, g, ww, nullptr);
+    MainWindow* w = new MainWindow(nullptr, g, ww, aw);
     w->setPalette(*palette);
     w->show();
+
 
 
 

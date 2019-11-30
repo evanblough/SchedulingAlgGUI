@@ -24,6 +24,7 @@ SOURCES += \
     Backend/defferableserver.cpp \
     Backend/periodictask.cpp \
     Backend/pollingserver.cpp \
+    Frontend/analysiswindow.cpp \
     Frontend/graphdisplay.cpp \
     Frontend/workloadwindow.cpp \
     backendmanualtestspollingserver.cpp \
@@ -37,12 +38,14 @@ HEADERS += \
     Backend/defferableserver.h \
     Backend/periodictask.h \
     Backend/pollingserver.h \
+    Frontend/analysiswindow.h \
     Frontend/graphdisplay.h \
     Frontend/workloadwindow.h \
     backendmanualtestspollingserver.h \
     mainwindow.h \
 
 FORMS += \
+    Frontend/analysiswindow.ui \
     Frontend/workloadwindow.ui \
     mainwindow.ui \
 

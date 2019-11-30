@@ -40,7 +40,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>388</width>
+         <width>385</width>
          <height>272</height>
         </rect>
        </property>
@@ -57,14 +57,14 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>389</width>
+         <width>386</width>
          <height>272</height>
         </rect>
        </property>
       </widget>
      </widget>
     </item>
-    <item row="0" column="0" colspan="2">
+    <item row="0" column="0" colspan="3">
      <widget class="QScrollArea" name="scrollArea">
       <property name="widgetResizable">
        <bool>true</bool>
