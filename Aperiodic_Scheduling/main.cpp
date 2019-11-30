@@ -15,6 +15,7 @@
 #include <bits/stdc++.h>
 #include "Frontend/workloadwindow.h"
 #include "Frontend/analysiswindow.h"
+#include "Frontend/displayadjuster.h"
 
 int main(int argc, char *argv[])
 {
@@ -81,7 +82,9 @@ int main(int argc, char *argv[])
     WorkloadWindow* ww = new WorkloadWindow();
     ww->setPalette(*palette);
 
-    MainWindow* w = new MainWindow(nullptr, g, ww, aw);
+    DisplayAdjuster* da = new DisplayAdjuster();
+
+    MainWindow* w = new MainWindow(nullptr, g, ww, aw, da);
     w->setPalette(*palette);
     w->show();
 

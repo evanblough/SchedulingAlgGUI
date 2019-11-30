@@ -25,6 +25,7 @@ SOURCES += \
     Backend/periodictask.cpp \
     Backend/pollingserver.cpp \
     Frontend/analysiswindow.cpp \
+    Frontend/displayadjuster.cpp \
     Frontend/graphdisplay.cpp \
     Frontend/workloadwindow.cpp \
     backendmanualtestspollingserver.cpp \
@@ -39,6 +40,7 @@ HEADERS += \
     Backend/periodictask.h \
     Backend/pollingserver.h \
     Frontend/analysiswindow.h \
+    Frontend/displayadjuster.h \
     Frontend/graphdisplay.h \
     Frontend/workloadwindow.h \
     backendmanualtestspollingserver.h \
@@ -46,6 +48,7 @@ HEADERS += \
 
 FORMS += \
     Frontend/analysiswindow.ui \
+    Frontend/displayadjuster.ui \
     Frontend/workloadwindow.ui \
     mainwindow.ui \
 

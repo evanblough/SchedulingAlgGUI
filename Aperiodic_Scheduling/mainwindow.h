@@ -12,7 +12,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr, QWidget* schedule_panel = nullptr, QWidget* workload_panel = nullptr, QWidget* analysis_panel = nullptr);
+    MainWindow(QWidget *parent = nullptr, QWidget* schedule_panel = nullptr, QWidget* workload_panel = nullptr, QWidget* analysis_panel = nullptr, QWidget* display_adjuster = nullptr);
     ~MainWindow();
 
 private:
