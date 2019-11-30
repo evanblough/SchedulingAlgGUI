@@ -33,16 +33,16 @@ int main(int argc, char *argv[])
 
     QPalette* palette = new QPalette(colors[1], colors[6], colors[0], colors[5], colors[2], colors[0], colors[6]);
 
+    //Setup Child Windows and Controller Object
     AnalysisWindow* aw = new AnalysisWindow();
-
     Controller* controller = new Controller(nullptr);
-
     WorkloadWindow* ww = new WorkloadWindow(nullptr, controller);
-    ww->setPalette(*palette);
-    controller->setFile_name(ww->getFile_name());
-
     DisplayAdjuster* da = new DisplayAdjuster();
 
+    //Fill Controller fields
+    controller->setAperiodic_file_name(ww->getAperiodic_file_name());
+
+    //Launch main window after all preconfiguration
     MainWindow* w = new MainWindow(nullptr, nullptr, ww, aw, da);
     w->setPalette(*palette);
     w->show();

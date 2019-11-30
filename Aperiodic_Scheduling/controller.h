@@ -8,16 +8,24 @@ class Controller : public QObject
 {
     Q_OBJECT
 public:
-    explicit Controller(QObject *parent = nullptr, QPlainTextEdit* file_name = nullptr);
-    QPlainTextEdit* file_name;
+    explicit Controller(QObject *parent = nullptr, QPlainTextEdit* aperiodic_file_name = nullptr);
 
-    QPlainTextEdit *getFile_name() const;
-    void setFile_name(QPlainTextEdit *value);
+
+    QPlainTextEdit *getAperiodic_file_name() const;
+    void setAperiodic_file_name(QPlainTextEdit *value);
+
+    QPlainTextEdit *getPeriodic_file_name() const;
+    void setPeriodic_file_name(QPlainTextEdit *value);
 
 signals:
 
 public slots:
     void file_input_selected(bool checked);
+
+
+private:
+    QPlainTextEdit* aperiodic_file_name;
+    QPlainTextEdit* periodic_file_name;
 
 };
 

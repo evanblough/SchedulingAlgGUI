@@ -7,9 +7,9 @@ WorkloadWindow::WorkloadWindow(QWidget *parent, Controller* controller) :
 {
     ui->setupUi(this);
     this->controller = controller;
-    this->setFile_name(this->ui->aperiodic_filename);
-    connect_sigs();
+    this->setAperiodic_file_name(this->ui->aperiodic_filename);
 
+    connect_sigs();
 }
 
 WorkloadWindow::~WorkloadWindow()
@@ -17,27 +17,19 @@ WorkloadWindow::~WorkloadWindow()
     delete ui;
 }
 
-void WorkloadWindow::on_verticalScrollBar_sliderMoved(int position)
-{
-
-}
-
-void WorkloadWindow::on_verticalScrollBar_valueChanged(int value)
-{
-
-}
-
 
 void WorkloadWindow::connect_sigs(){
     QObject::connect(this->ui->file_input_button, &QPushButton::clicked, this->controller, &Controller::file_input_selected);
 }
 
-QPlainTextEdit *WorkloadWindow::getFile_name() const
+QPlainTextEdit *WorkloadWindow::getAperiodic_file_name() const
 {
-    return file_name;
+    return aperiodic_file_name;
 }
 
-void WorkloadWindow::setFile_name(QPlainTextEdit *value)
+void WorkloadWindow::setAperiodic_file_name(QPlainTextEdit *value)
 {
-    file_name = value;
+    aperiodic_file_name = value;
 }
+
+
