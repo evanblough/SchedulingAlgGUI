@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>464</width>
-    <height>324</height>
+    <height>358</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -28,14 +28,14 @@
     </spacer>
    </item>
    <item row="7" column="2">
-    <widget class="QCheckBox" name="checkBox_5">
+    <widget class="QCheckBox" name="avg_response_time">
      <property name="text">
       <string>Average Response Time</string>
      </property>
     </widget>
    </item>
    <item row="5" column="2">
-    <widget class="QCheckBox" name="checkBox_4">
+    <widget class="QCheckBox" name="num_of_switches">
      <property name="text">
       <string>Number of Context Switches</string>
      </property>
@@ -55,14 +55,14 @@
     </spacer>
    </item>
    <item row="7" column="0">
-    <widget class="QPushButton" name="pushButton">
+    <widget class="QPushButton" name="run_analysis">
      <property name="text">
       <string>Run Analysis</string>
      </property>
     </widget>
    </item>
    <item row="3" column="2">
-    <widget class="QCheckBox" name="checkBox_3">
+    <widget class="QCheckBox" name="cpu_utilization">
      <property name="text">
       <string>CPU Utilization</string>
      </property>
@@ -83,35 +83,35 @@
     </widget>
    </item>
    <item row="3" column="0">
-    <widget class="QCheckBox" name="checkBox">
+    <widget class="QCheckBox" name="polling_server">
      <property name="text">
       <string>Polling Server</string>
      </property>
     </widget>
    </item>
    <item row="5" column="0">
-    <widget class="QCheckBox" name="checkBox_2">
+    <widget class="QCheckBox" name="defferable_server">
      <property name="text">
       <string>Defferable Server</string>
      </property>
     </widget>
    </item>
    <item row="6" column="2">
-    <widget class="QPlainTextEdit" name="plainTextEdit_2">
+    <widget class="QPlainTextEdit" name="switch_output">
      <property name="placeholderText">
       <string>Output</string>
      </property>
     </widget>
    </item>
    <item row="4" column="2">
-    <widget class="QPlainTextEdit" name="plainTextEdit">
+    <widget class="QPlainTextEdit" name="cpu_output">
      <property name="placeholderText">
       <string>Output</string>
      </property>
     </widget>
    </item>
    <item row="8" column="2">
-    <widget class="QPlainTextEdit" name="plainTextEdit_3">
+    <widget class="QPlainTextEdit" name="resp_time_output">
      <property name="placeholderText">
       <string>Output</string>
      </property>

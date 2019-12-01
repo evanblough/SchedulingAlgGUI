@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     WorkloadWindow* ww = new WorkloadWindow(nullptr);
     DisplayAdjuster* da = new DisplayAdjuster();
 
-    Controller* controller = new Controller(nullptr, ww);
+    Controller* controller = new Controller(nullptr, ww, aw);
 
     //Launch main window after all preconfiguration
     MainWindow* w = new MainWindow(nullptr, nullptr, ww, aw, da);

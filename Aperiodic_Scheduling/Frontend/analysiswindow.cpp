@@ -12,3 +12,8 @@ AnalysisWindow::~AnalysisWindow()
 {
     delete ui;
 }
+
+Ui::AnalysisWindow *AnalysisWindow::getUi() const
+{
+    return ui;
+}

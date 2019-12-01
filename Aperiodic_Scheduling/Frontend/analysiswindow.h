@@ -15,6 +15,8 @@ public:
     explicit AnalysisWindow(QWidget *parent = nullptr);
     ~AnalysisWindow();
 
+    Ui::AnalysisWindow *getUi() const;
+
 private:
     Ui::AnalysisWindow *ui;
 };
