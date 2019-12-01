@@ -16,6 +16,7 @@
 #include "Frontend/workloadwindow.h"
 #include "Frontend/analysiswindow.h"
 #include "Frontend/displayadjuster.h"
+#include "controller.h"
 
 int main(int argc, char *argv[])
 {
@@ -35,12 +36,10 @@ int main(int argc, char *argv[])
 
     //Setup Child Windows and Controller Object
     AnalysisWindow* aw = new AnalysisWindow();
-    Controller* controller = new Controller(nullptr);
-    WorkloadWindow* ww = new WorkloadWindow(nullptr, controller);
+    WorkloadWindow* ww = new WorkloadWindow(nullptr);
     DisplayAdjuster* da = new DisplayAdjuster();
 
-    //Fill Controller fields
-    controller->setAperiodic_file_name(ww->getAperiodic_file_name());
+    Controller* controller = new Controller(nullptr, ww);
 
     //Launch main window after all preconfiguration
     MainWindow* w = new MainWindow(nullptr, nullptr, ww, aw, da);

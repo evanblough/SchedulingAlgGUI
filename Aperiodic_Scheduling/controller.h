@@ -3,19 +3,15 @@
 
 #include <QObject>
 #include "QPlainTextEdit"
+#include "QPushButton"
+#include "Frontend/workloadwindow.h"
 
 class Controller : public QObject
 {
     Q_OBJECT
 public:
-    explicit Controller(QObject *parent = nullptr, QPlainTextEdit* aperiodic_file_name = nullptr);
-
-
-    QPlainTextEdit *getAperiodic_file_name() const;
-    void setAperiodic_file_name(QPlainTextEdit *value);
-
-    QPlainTextEdit *getPeriodic_file_name() const;
-    void setPeriodic_file_name(QPlainTextEdit *value);
+    explicit Controller(QObject *parent = nullptr, WorkloadWindow *workload_window = nullptr);
+    void connect_sigs();
 
 signals:
 
@@ -24,8 +20,7 @@ public slots:
 
 
 private:
-    QPlainTextEdit* aperiodic_file_name;
-    QPlainTextEdit* periodic_file_name;
+    WorkloadWindow* workload_window;
 
 };
 
