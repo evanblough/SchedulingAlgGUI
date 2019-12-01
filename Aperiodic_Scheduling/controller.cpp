@@ -3,6 +3,8 @@
 #include "ui_workloadwindow.h"
 #include "ui_analysiswindow.h"
 #include "Frontend/workloadwindow.h"
+#include "Backend/defferableserver.h"
+#include "Backend/pollingserver.h"
 
 /**
  * @brief Controller::Controller This Class is used for routing information in Frontend=>Frontend and Frontend=>Backend Communication.
@@ -99,6 +101,41 @@ void Controller::response_selected(bool checked){
     response_flag = !response_flag;
 
 }
+void Controller::run_analysis(bool checked){
+    //Run compatibility checks
+    if(!defferable_server_flag && !polling_server_flag){
+        printf("Invalid run configuration: Select either defferable server or polling server\n");
+        return;
+    }
+    if(!workload_set_flag){
+        printf("Invalid Run Configuration: Provide a workload input");
+        return;
+    }
+    //Attempt to generate Scheduler Object
+    if(defferable_server_flag){
+        DefferableServer* ds = new DefferableServer(aper_tasks, per_tasks, num_aper_tasks, num_per_tasks, alloted_server_index);
+        if(produce_schedule(ds))
+            generate_schedule_graph();
+        else
+            printf("Workload not scheduable under Defferable Server\n");
+    }
+    else{
+        PollingServer* ps = new PollingServer(aper_tasks, per_tasks, num_aper_tasks, num_per_tasks, alloted_server_index);
+        if(produce_schedule(ps))
+            generate_schedule_graph();
+        else
+            printf("Workload not scheduable under Polling Server");
+    }
+
+}
+
+bool Controller::produce_schedule(AperiodicScheduler* aper_scheduler){
+    return false;
+}
+
+void Controller::generate_schedule_graph(){
+    return;
+}
 
 
 
@@ -120,6 +157,8 @@ void Controller::connect_sigs(){
     QObject::connect(this->analysis_window->getUi()->num_of_switches, &QCheckBox::clicked, this, &Controller::context_selected);
     //Avg Response Time
     QObject::connect(this->analysis_window->getUi()->avg_response_time, &QCheckBox::clicked, this, &Controller::response_selected);
+    //Run Analysis Button
+    QObject::connect(this->analysis_window->getUi()->run_analysis, &QPushButton::clicked, this, &Controller::run_analysis);
 
 }
 
