@@ -15,10 +15,18 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="2" column="1" colspan="2">
-    <widget class="QPlainTextEdit" name="plainTextEdit"/>
+    <widget class="QPlainTextEdit" name="zoom_level">
+     <property name="placeholderText">
+      <string>Zoom Level (Int):</string>
+     </property>
+    </widget>
    </item>
    <item row="7" column="1">
-    <widget class="QPlainTextEdit" name="plainTextEdit_2"/>
+    <widget class="QPlainTextEdit" name="start_time">
+     <property name="placeholderText">
+      <string>Start Time (Int):</string>
+     </property>
+    </widget>
    </item>
    <item row="6" column="2">
     <widget class="QLabel" name="label_4">
@@ -28,7 +36,7 @@
     </widget>
    </item>
    <item row="3" column="1" colspan="2">
-    <widget class="QPushButton" name="pushButton">
+    <widget class="QPushButton" name="open_seperate_window">
      <property name="text">
       <string>Open Seperate Window</string>
      </property>
@@ -49,7 +57,11 @@
     </widget>
    </item>
    <item row="7" column="2">
-    <widget class="QPlainTextEdit" name="plainTextEdit_3"/>
+    <widget class="QPlainTextEdit" name="end_time">
+     <property name="placeholderText">
+      <string>End Time (Int):</string>
+     </property>
+    </widget>
    </item>
    <item row="6" column="1">
     <widget class="QLabel" name="label_3">

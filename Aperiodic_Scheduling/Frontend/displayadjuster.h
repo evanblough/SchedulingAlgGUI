@@ -15,6 +15,8 @@ public:
     explicit DisplayAdjuster(QWidget *parent = nullptr);
     ~DisplayAdjuster();
 
+    Ui::DisplayAdjuster *getUi() const;
+
 private:
     Ui::DisplayAdjuster *ui;
 };

@@ -12,3 +12,8 @@ DisplayAdjuster::~DisplayAdjuster()
 {
     delete ui;
 }
+
+Ui::DisplayAdjuster *DisplayAdjuster::getUi() const
+{
+    return ui;
+}

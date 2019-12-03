@@ -17,6 +17,7 @@
 #include "Frontend/analysiswindow.h"
 #include "Frontend/displayadjuster.h"
 #include "controller.h"
+#include "ui_analysiswindow.h"
 
 int main(int argc, char *argv[])
 {
@@ -39,12 +40,19 @@ int main(int argc, char *argv[])
     WorkloadWindow* ww = new WorkloadWindow(nullptr);
     DisplayAdjuster* da = new DisplayAdjuster();
 
-    Controller* controller = new Controller(nullptr, ww, aw);
+    Controller* controller = new Controller(nullptr, ww, aw, da);
 
     //Launch main window after all preconfiguration
     MainWindow* w = new MainWindow(nullptr, nullptr, ww, aw, da);
     w->setPalette(*palette);
     w->show();
+
+    //Highlight run button
+    colors[6] = colors[1];
+    colors[0].setNamedColor("#292629"); //Dark Grey
+    palette = new QPalette(colors[1], colors[6], colors[0], colors[5], colors[2], colors[0], colors[6]);
+
+    aw->getUi()->run_analysis->setPalette(*palette);
 
 
 

@@ -5,15 +5,17 @@
 #include "Frontend/workloadwindow.h"
 #include "Backend/defferableserver.h"
 #include "Backend/pollingserver.h"
+#include "ui_displayadjuster.h"
 
 /**
  * @brief Controller::Controller This Class is used for routing information in Frontend=>Frontend and Frontend=>Backend Communication.
  * @param parent Not used
  */
-Controller::Controller(QObject *parent, WorkloadWindow* workload_window, AnalysisWindow* analysis_window) : QObject(parent)
+Controller::Controller(QObject *parent, WorkloadWindow* workload_window, AnalysisWindow* analysis_window, DisplayAdjuster* display_adjuster) : QObject(parent)
 {
     this->workload_window = workload_window;
     this->analysis_window = analysis_window;
+    this->display_adjuster = display_adjuster;
 
     this->workload_set_flag = false;
     this->polling_server_flag = false;
@@ -21,6 +23,8 @@ Controller::Controller(QObject *parent, WorkloadWindow* workload_window, Analysi
     this->cpu_flag = false;
     this->context_flag = false;
     this->response_flag = false;
+
+    this->zoom_level = 20;
 
     this->connect_sigs();
 
@@ -137,6 +141,46 @@ void Controller::generate_schedule_graph(){
     return;
 }
 
+void Controller::update_zoom_level(){
+    QString text = this->display_adjuster->getUi()->zoom_level->toPlainText();
+    this->zoom_level = text.toInt();
+    if(zoom_level <= 0)
+        zoom_level = 20;
+    printf("Zoomy: %d\n", this->zoom_level);
+}
+
+void Controller::open_seperate_schedule(bool checked){
+//TODO
+    printf("Open Seperate Schedule\n");
+}
+
+void Controller::update_start_time(){
+    start_time = this->display_adjuster->getUi()->start_time->toPlainText().toInt();
+    //Fix Invalid Input
+    if(start_time < 0 || start_time > end_time){
+        start_time = 0;
+        this->display_adjuster->getUi()->start_time->clear();
+    }
+
+}
+
+void Controller::update_end_time(){
+    //TODO: Add CASES to check if start and end are populated;
+    end_time = this->display_adjuster->getUi()->end_time->toPlainText().toInt();
+    //Fix Invalid Input
+    if(end_time < 1 || end_time <= start_time){
+        end_time = this->sched_len;
+        this->display_adjuster->getUi()->end_time->clear();
+    }
+    if(end_time < 1 || end_time <= start_time){
+        end_time = 0;if(end_time < 1 || end_time <= start_time){
+            end_time = this->sched_len;
+        }
+    }
+
+
+}
+
 
 
 void Controller::connect_sigs(){
@@ -159,6 +203,16 @@ void Controller::connect_sigs(){
     QObject::connect(this->analysis_window->getUi()->avg_response_time, &QCheckBox::clicked, this, &Controller::response_selected);
     //Run Analysis Button
     QObject::connect(this->analysis_window->getUi()->run_analysis, &QPushButton::clicked, this, &Controller::run_analysis);
+
+    //Display Adjuster Window
+    //Zoom Level
+    QObject::connect(this->display_adjuster->getUi()->zoom_level, &QPlainTextEdit::textChanged, this, &Controller::update_zoom_level);
+    //Open New Display Window
+    QObject::connect(this->display_adjuster->getUi()->open_seperate_window, &QPushButton::clicked, this, &Controller::open_seperate_schedule);
+    //Start Time
+    QObject::connect(this->display_adjuster->getUi()->start_time, &QPlainTextEdit::textChanged, this, &Controller::update_start_time);
+    //End Time
+    QObject::connect(this->display_adjuster->getUi()->end_time, &QPlainTextEdit::textChanged, this, &Controller::update_end_time);
 
 }
 

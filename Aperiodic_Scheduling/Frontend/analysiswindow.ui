@@ -56,6 +56,12 @@
    </item>
    <item row="7" column="0">
     <widget class="QPushButton" name="run_analysis">
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
      <property name="text">
       <string>Run Analysis</string>
      </property>
