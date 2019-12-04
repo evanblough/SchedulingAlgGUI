@@ -17,7 +17,7 @@ GraphDisplay::GraphDisplay(QWidget *parent, int *schedule, int sched_len, int nu
 //Called everytime a paintevent triggered ex: resize screen etc.
 void GraphDisplay::paintEvent(QPaintEvent *event)
 {
-
+    //Width and Height of a task box
     int width = 3*zoom/wscale;
     int height = zoom/vscale;
 
@@ -51,8 +51,8 @@ void GraphDisplay::paintEvent(QPaintEvent *event)
     //Iterate through schedule and paint boxes in relative coordinates
     for(int i = 0; i < sched_len; i++){
             if(*(schedule + i) != -1){
-                sprintf(task_name, "T%d", *(schedule+i));
-                draw_textbox(i*width, *(schedule+i)*height, width, height, task_colors[*(schedule+i)], Qt::black, task_name);
+                sprintf(task_name, "T%d", schedule[i]);
+                draw_textbox(i*width, *(schedule+i)*height, width, height, task_colors[schedule[i]], Qt::black, task_name);
             }
     }
 
@@ -92,6 +92,66 @@ void GraphDisplay::draw_timeline(int box_width, int box_height, int linewidth, i
         painter.drawText(i*width + 5, box_height - height/4, index);
     }
 
+}
+
+int *GraphDisplay::getSchedule() const
+{
+    return schedule;
+}
+
+void GraphDisplay::setSchedule(int *value)
+{
+    schedule = value;
+}
+
+int GraphDisplay::getZoom() const
+{
+    return zoom;
+}
+
+void GraphDisplay::setZoom(int value)
+{
+    zoom = value;
+}
+
+int GraphDisplay::getVscale() const
+{
+    return vscale;
+}
+
+void GraphDisplay::setVscale(int value)
+{
+    vscale = value;
+}
+
+int GraphDisplay::getWscale() const
+{
+    return wscale;
+}
+
+void GraphDisplay::setWscale(int value)
+{
+    wscale = value;
+}
+
+int GraphDisplay::getNum_tasks() const
+{
+    return num_tasks;
+}
+
+void GraphDisplay::setNum_tasks(int value)
+{
+    num_tasks = value;
+}
+
+int GraphDisplay::getSched_len() const
+{
+    return sched_len;
+}
+
+void GraphDisplay::setSched_len(int value)
+{
+    sched_len = value;
 }
 
 

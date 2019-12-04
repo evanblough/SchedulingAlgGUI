@@ -164,9 +164,9 @@ AperiodicTask* AperiodicTask::parse_file(int* size, QString filename){
             }
             //Populate Task
             workload[i].setReady_time(values[0].toInt());
-            workload[i].setDeadline(values[1].toInt());
-            workload[i].setComputation_time(values[2].toInt());
-            workload[i].setComputation_time(values[2].toInt());
+            workload[i].setDeadline(values[2].toInt());
+            workload[i].setComputation_time(values[1].toInt());
+            workload[i].setComputation_time(values[1].toInt());
             i++;
         }
         input_file.close();

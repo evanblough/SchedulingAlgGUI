@@ -11,11 +11,12 @@
  * @brief Controller::Controller This Class is used for routing information in Frontend=>Frontend and Frontend=>Backend Communication.
  * @param parent Not used
  */
-Controller::Controller(QObject *parent, WorkloadWindow* workload_window, AnalysisWindow* analysis_window, DisplayAdjuster* display_adjuster) : QObject(parent)
+Controller::Controller(QObject *parent, WorkloadWindow* workload_window, AnalysisWindow* analysis_window, DisplayAdjuster* display_adjuster, GraphDisplay* graph_display) : QObject(parent)
 {
     this->workload_window = workload_window;
     this->analysis_window = analysis_window;
     this->display_adjuster = display_adjuster;
+    this->graph_display = graph_display;
 
     this->workload_set_flag = false;
     this->polling_server_flag = false;
@@ -25,6 +26,8 @@ Controller::Controller(QObject *parent, WorkloadWindow* workload_window, Analysi
     this->response_flag = false;
 
     this->zoom_level = 20;
+    schedule = nullptr;
+    this->alloted_server_index = 0;
 
     this->connect_sigs();
 
@@ -56,6 +59,7 @@ void Controller::file_input_selected(bool checked){
         fflush(stdout);
         printf("Per Stats %d: %d, %d, %d\n", i, per_tasks[i].getComputation_time(), per_tasks[i].getPeriod(), alloted_server_index);
     }
+
 
     //Todo parse files
 
@@ -146,10 +150,18 @@ void Controller::run_analysis(bool checked){
 }
 
 bool Controller::produce_schedule(AperiodicScheduler* aper_scheduler){
-    return false;
+    schedule = aper_scheduler->getSchedule();
+    sched_len = aper_scheduler->getSchedule_length();
+    aper_tasks = aper_scheduler->getAper_tasks();
+    per_tasks = aper_scheduler->getPer_tasks();
+    return aper_scheduler->getScheduable();
 }
 
 void Controller::generate_schedule_graph(){
+    graph_display->setNum_tasks(this->num_per_tasks);
+    graph_display->setSched_len(sched_len);
+    graph_display->setSchedule(schedule);
+    graph_display->update();
     return;
 }
 
@@ -159,6 +171,8 @@ void Controller::update_zoom_level(){
     if(zoom_level <= 0)
         zoom_level = 20;
     printf("Zoomy: %d\n", this->zoom_level);
+    graph_display->setZoom(zoom_level);
+    graph_display->update();
 }
 
 void Controller::open_seperate_schedule(bool checked){
@@ -191,6 +205,11 @@ void Controller::update_end_time(){
     }
 
 
+}
+
+void Controller::setSchedule(int *value)
+{
+    schedule = value;
 }
 
 

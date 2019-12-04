@@ -10,13 +10,16 @@
 #include "Backend/periodictask.h"
 #include "Backend/aperiodicscheduler.h"
 #include "Frontend/displayadjuster.h"
+#include "Frontend/graphdisplay.h"
 
 class Controller : public QObject
 {
     Q_OBJECT
 public:
-    explicit Controller(QObject *parent = nullptr, WorkloadWindow *workload_window = nullptr, AnalysisWindow* analysis_window = nullptr, DisplayAdjuster* display_adjuster = nullptr);
+    explicit Controller(QObject *parent = nullptr, WorkloadWindow *workload_window = nullptr, AnalysisWindow* analysis_window = nullptr, DisplayAdjuster* display_adjuster = nullptr, GraphDisplay* graph_display = nullptr);
     void connect_sigs();
+
+    void setSchedule(int *value);
 
 signals:
 
@@ -38,11 +41,13 @@ private:
     WorkloadWindow* workload_window;
     AnalysisWindow* analysis_window;
     DisplayAdjuster* display_adjuster;
+    GraphDisplay* graph_display;
     bool workload_set_flag, polling_server_flag, defferable_server_flag, cpu_flag, context_flag, response_flag;
     int num_aper_tasks, num_per_tasks, sched_len, alloted_server_index, zoom_level, start_time, end_time;
     int* schedule;
     AperiodicTask* aper_tasks;
     PeriodicTask* per_tasks;
+
 
     bool produce_schedule(AperiodicScheduler* aper_scheduler);
     void generate_schedule_graph();

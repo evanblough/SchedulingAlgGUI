@@ -39,11 +39,13 @@ int main(int argc, char *argv[])
     AnalysisWindow* aw = new AnalysisWindow();
     WorkloadWindow* ww = new WorkloadWindow(nullptr);
     DisplayAdjuster* da = new DisplayAdjuster();
+    GraphDisplay* gd = new GraphDisplay();
+    gd->setFixedSize(30000, 1000);
 
-    Controller* controller = new Controller(nullptr, ww, aw, da);
+    Controller* controller = new Controller(nullptr, ww, aw, da, gd);
 
     //Launch main window after all preconfiguration
-    MainWindow* w = new MainWindow(nullptr, nullptr, ww, aw, da);
+    MainWindow* w = new MainWindow(nullptr, gd, ww, aw, da);
     w->setPalette(*palette);
     w->show();
 
@@ -54,18 +56,8 @@ int main(int argc, char *argv[])
 
     aw->getUi()->run_analysis->setPalette(*palette);
 
-
-
-
-
-
-
-
-
     //BackendManualTestsPollingServer* bt = new BackendManualTestsPollingServer(nullptr);
     //QTest::qExec(bt);
-
-
 
     return a.exec();
 }
