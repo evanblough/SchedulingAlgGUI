@@ -18,6 +18,8 @@ public:
     int getRemaining_cpu_time() const;
     void setRemaining_cpu_time(int value);
 
+     static PeriodicTask* parse_file(int* size, int* alloted_server_index, QString filename);
+
 private:
     int computation_time;
     int period;

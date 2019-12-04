@@ -135,7 +135,6 @@ AperiodicTask* AperiodicTask::parse_file(int* size, QString filename){
     printf("Aperiodic File Input: %s\n", file);
     std::string line;
     std::ifstream input_file (file);
-    //Todo implement Parse
 
     *size = 0;
     int i = 0;

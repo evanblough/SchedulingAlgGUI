@@ -1,4 +1,6 @@
 #include "periodictask.h"
+#include <iostream>
+#include <fstream>
 
 /**
  * @brief PeriodicTask::PeriodicTask This class is a model for the information a periodic task would have.
@@ -71,4 +73,53 @@ int PeriodicTask::getRemaining_cpu_time() const
 void PeriodicTask::setRemaining_cpu_time(int value)
 {
     remaining_cpu_time = value;
+}
+
+PeriodicTask* PeriodicTask::parse_file(int* size, int* alloted_server_index, QString filename){
+    QByteArray ba = filename.toLocal8Bit();
+    const char* file = ba.data();
+    printf("Periodic File Input: %s\n", file);
+    std::string line;
+    std::ifstream input_file (file);
+
+    *size = 0;
+    int i = 0;
+
+    if (input_file.is_open())
+      {
+        if(getline(input_file,line)){
+            //Set num tasks
+            *size = std::stoi(line);
+            PeriodicTask* workload = new PeriodicTask[*size];
+        while(getline(input_file, line) && i < *size){
+
+            int index = 0;
+            QString values[2];
+            values[0] = "";
+            values[1] = "";
+            //Iterate through line and delimit by comma
+            for(unsigned j = 0; j < line.length(); j++){
+                if(line.at(j) == '%'){
+                    *alloted_server_index = i;
+                }
+                else if(line.at(j) != ','){
+                     values[index].append(line.at(j));
+                }
+                else{
+                    index++;
+                }
+            }
+            workload[i].setComputation_time(values[0].toInt());
+            workload[i].setRemaining_cpu_time(values[0].toInt());
+            workload[i].setPeriod(values[1].toInt());
+            i++;
+        }
+        input_file.close();
+        return workload;
+
+        }
+
+    }
+    input_file.close();
+    return nullptr;
 }

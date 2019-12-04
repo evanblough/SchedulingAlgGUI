@@ -49,7 +49,13 @@ void Controller::file_input_selected(bool checked){
     str = this->workload_window->getUi()->periodic_filename->toPlainText();
     ba = str.toLocal8Bit();
     const char* file1 = ba.data();
-    printf("Aperiodic File Input: %s\n", file1);
+    printf("Periodic File Input: %s\n", file1);
+
+    per_tasks = PeriodicTask::parse_file(&this->num_per_tasks, &this->alloted_server_index, str);
+    for(int i =0; i< num_per_tasks; i++){
+        fflush(stdout);
+        printf("Per Stats %d: %d, %d, %d\n", i, per_tasks[i].getComputation_time(), per_tasks[i].getPeriod(), alloted_server_index);
+    }
 
     //Todo parse files
 
