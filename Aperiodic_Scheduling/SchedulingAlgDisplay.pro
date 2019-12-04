@@ -18,6 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    Backend/analysismetrics.cpp \
     Backend/aperiodicscheduler.cpp \
     Backend/aperiodictask.cpp \
     Backend/deadlinecomparator.cpp \
@@ -34,6 +35,7 @@ SOURCES += \
     mainwindow.cpp \
 
 HEADERS += \
+    Backend/analysismetrics.h \
     Backend/aperiodicscheduler.h \
     Backend/aperiodictask.h \
     Backend/deadlinecomparator.h \
