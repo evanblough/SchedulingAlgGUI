@@ -39,6 +39,12 @@ void Controller::file_input_selected(bool checked){
     const char* file = ba.data();
     printf("Aperiodic File Input: %s\n", file);
 
+    aper_tasks = AperiodicTask::parse_file(&this->num_aper_tasks, str);
+    for(int i =0; i< num_aper_tasks; i++){
+        fflush(stdout);
+        printf("Aper Stats %d: %d, %d, %d\n", aper_tasks[i].getIndex(), aper_tasks[i].getReady_time(), aper_tasks[i].getComputation_time(), aper_tasks[i].getDeadline());
+    }
+
     //Grab Periodic Filename
     str = this->workload_window->getUi()->periodic_filename->toPlainText();
     ba = str.toLocal8Bit();

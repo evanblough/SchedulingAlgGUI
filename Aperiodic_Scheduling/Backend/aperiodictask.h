@@ -27,6 +27,8 @@ public:
     int getIndex() const;
     void setIndex(int value);
 
+    static AperiodicTask* parse_file(int* size, QString filename);
+
 private:
     int computation_time, remaining_cpu_time, deadline, ready_time, finish_time, index;
 

@@ -1,4 +1,7 @@
 #include "aperiodictask.h"
+#include <iostream>
+#include <fstream>
+
 
 /**
  * @brief AperiodicTask::AperiodicTask
@@ -124,4 +127,54 @@ int AperiodicTask::getIndex() const
 void AperiodicTask::setIndex(int value)
 {
     index = value;
+}
+
+AperiodicTask* AperiodicTask::parse_file(int* size, QString filename){
+    QByteArray ba = filename.toLocal8Bit();
+    const char* file = ba.data();
+    printf("Aperiodic File Input: %s\n", file);
+    std::string line;
+    std::ifstream input_file (file);
+    //Todo implement Parse
+
+    *size = 0;
+    int i = 0;
+
+    if (input_file.is_open())
+      {
+        if(getline(input_file,line)){
+            //Set num tasks
+            *size = std::stoi(line);
+            AperiodicTask* workload = new AperiodicTask[*size];
+        while(getline(input_file, line) && i < *size){
+
+            workload[i].setIndex(i);
+            int index = 0;
+            QString values[3];
+            values[0] = "";
+            values[1] = "";
+            values[2] = "";
+            //Iterate through line and delimit by comma
+            for(unsigned j = 0; j < line.length(); j++){
+                if(line.at(j) != ','){
+                    values[index].append(line.at(j));
+                }
+                else{
+                    index++;
+                }
+            }
+            //Populate Task
+            workload[i].setReady_time(values[0].toInt());
+            workload[i].setDeadline(values[1].toInt());
+            workload[i].setComputation_time(values[2].toInt());
+            workload[i].setComputation_time(values[2].toInt());
+            i++;
+        }
+        input_file.close();
+        return workload;
+      }
+    }
+    input_file.close();
+    return nullptr;
+
 }
