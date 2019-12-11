@@ -6,6 +6,7 @@
 #include "Backend/defferableserver.h"
 #include "Backend/pollingserver.h"
 #include "ui_displayadjuster.h"
+#include "Backend/analysismetrics.h"
 
 /**
  * @brief Controller::Controller This Class is used for routing information in Frontend=>Frontend and Frontend=>Backend Communication.
@@ -146,6 +147,21 @@ void Controller::run_analysis(bool checked){
         else
             printf("Workload not scheduable under Polling Server");
     }
+    //CPU Utiliztion
+    if(cpu_flag){
+        QString cpu_utilization = QString::number(AnalysisMetrics::compute_metric(schedule, sched_len, 0, aper_tasks, num_aper_tasks));
+        analysis_window->getUi()->cpu_output->setPlainText(cpu_utilization);
+    }
+    //Context Switches
+    if(context_flag){
+        QString context = QString::number(AnalysisMetrics::compute_metric(schedule, sched_len, 1, aper_tasks, num_aper_tasks));
+        analysis_window->getUi()->switch_output->setPlainText(context);
+    }
+    //Average Response Time
+    if(response_flag){
+        QString response = QString::number(AnalysisMetrics::compute_metric(schedule, sched_len, 2, aper_tasks, num_aper_tasks));
+        analysis_window->getUi()->resp_time_output->setPlainText(response);
+    }
 
 }
 
@@ -161,6 +177,11 @@ void Controller::generate_schedule_graph(){
     graph_display->setNum_tasks(this->num_per_tasks);
     graph_display->setSched_len(sched_len);
     graph_display->setSchedule(schedule);
+    graph_display->setFixedSize(30000, 500);
+    graph_display->setW(30000);
+    graph_display->setH(500);
+    graph_display->setVscale(this->num_per_tasks+1);
+    graph_display->setWscale(this->sched_len);
     graph_display->update();
     return;
 }

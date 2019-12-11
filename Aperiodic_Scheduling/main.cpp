@@ -23,6 +23,9 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
+    //BackendManualTestsPollingServer* bt = new BackendManualTestsPollingServer(nullptr);
+    //QTest::qExec(bt);
+
     //Color Pallete
     QColor colors[7];
     colors[0].setNamedColor("#BFFBFF"); //Pale Blue
@@ -40,7 +43,7 @@ int main(int argc, char *argv[])
     WorkloadWindow* ww = new WorkloadWindow(nullptr);
     DisplayAdjuster* da = new DisplayAdjuster();
     GraphDisplay* gd = new GraphDisplay();
-    gd->setFixedSize(30000, 1000);
+    //gd->setFixedSize(30000, 500);
 
     Controller* controller = new Controller(nullptr, ww, aw, da, gd);
 
@@ -53,11 +56,9 @@ int main(int argc, char *argv[])
     colors[6] = colors[1];
     colors[0].setNamedColor("#292629"); //Dark Grey
     palette = new QPalette(colors[1], colors[6], colors[0], colors[5], colors[2], colors[0], colors[6]);
-
     aw->getUi()->run_analysis->setPalette(*palette);
 
-    //BackendManualTestsPollingServer* bt = new BackendManualTestsPollingServer(nullptr);
-    //QTest::qExec(bt);
+
 
     return a.exec();
 }

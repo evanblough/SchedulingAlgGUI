@@ -20,7 +20,7 @@ float AnalysisMetrics::compute_metric(int* schedule, int schedule_length, int me
                 active++;
             }
         }
-        return active/schedule_length;
+        return float(active)/float(schedule_length);
     }
     //Context Switch
     case 1:{

@@ -34,8 +34,9 @@ PollingServer::PollingServer(AperiodicTask* aper_tasks, PeriodicTask* per_tasks,
     this->setNum_aper_tasks(num_aper_tasks);
     this->setSchedule(nullptr);
     this->setScheduable(true);
-    this->setAlloted_server(&per_tasks[alloted_server_index]);
     this->setAlloted_server_index(alloted_server_index);
+    this->setAlloted_server(&per_tasks[alloted_server_index]);
+
     //Use methods to fill fields
     this->perform_scheduability_test();
     this->produce_schedule();

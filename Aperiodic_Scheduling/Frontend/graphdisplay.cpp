@@ -2,7 +2,7 @@
 #include "QPainter"
 #include "QPaintEvent"
 
-GraphDisplay::GraphDisplay(QWidget *parent, int *schedule, int sched_len, int num_tasks, int wscale, int vscale, int zoom) : QWidget(parent)
+GraphDisplay::GraphDisplay(QWidget *parent, int *schedule, int sched_len, int num_tasks, int wscale, int vscale, int w, int h) : QWidget(parent)
 {
     this->schedule = schedule;
     this->sched_len = sched_len;
@@ -10,7 +10,8 @@ GraphDisplay::GraphDisplay(QWidget *parent, int *schedule, int sched_len, int nu
     this->wscale = wscale;
     this->vscale = vscale;
     this->update();
-    this->zoom = zoom;
+    this->w = w;
+    this->h = h;
 
 }
 
@@ -18,8 +19,8 @@ GraphDisplay::GraphDisplay(QWidget *parent, int *schedule, int sched_len, int nu
 void GraphDisplay::paintEvent(QPaintEvent *event)
 {
     //Width and Height of a task box
-    int width = 3*zoom/wscale;
-    int height = zoom/vscale;
+    int width = w/wscale;
+    int height = h/vscale;
 
     //Clear screen before new drawing
     QPainter qp(this);
@@ -58,7 +59,7 @@ void GraphDisplay::paintEvent(QPaintEvent *event)
 
 
     //Create Timeline
-    draw_timeline(3*zoom, zoom, 1, width, height, 0, sched_len);
+    draw_timeline(w, h, 1, width, height, 0, sched_len);
     fflush(stdout);
 
 
@@ -92,6 +93,26 @@ void GraphDisplay::draw_timeline(int box_width, int box_height, int linewidth, i
         painter.drawText(i*width + 5, box_height - height/4, index);
     }
 
+}
+
+int GraphDisplay::getH() const
+{
+    return h;
+}
+
+void GraphDisplay::setH(int value)
+{
+    h = value;
+}
+
+int GraphDisplay::getW() const
+{
+    return w;
+}
+
+void GraphDisplay::setW(int value)
+{
+    w = value;
 }
 
 int *GraphDisplay::getSchedule() const
