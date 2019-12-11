@@ -231,7 +231,42 @@ void BackendManualTestsPollingServer::feasible_schedule_three(){
         //Conver QString to const char *
         QByteArray ba = result_messages(i).toLocal8Bit();
         char* str = ba.data();
-        QVERIFY2(results(ps, 24, expected_schedule, expected[i], i, finish_times), str);
+        QVERIFY2(results(ps, size, expected_schedule, expected[i], i, finish_times), str);
+        if(!ps->getScheduable() && i == 2){
+            break;
+        }
+    }
+}
+
+void BackendManualTestsPollingServer::feasible_schedule_four(){
+    int num_per_tasks, num_aper_tasks, alloted_server_index;
+    //Generate Workload
+    PeriodicTask* per_workload = PeriodicTask::parse_file(&num_per_tasks, &alloted_server_index, "/home/rmasl/Desktop/Evan_Personal_Use/SchedulingAlgDisplay/SchedulingAlgDisplay/Aperiodic_Scheduling/InputFiles/PollingServerTests/per_test_4.csv");
+    AperiodicTask* aper_workload = AperiodicTask::parse_file(&num_aper_tasks, "/home/rmasl/Desktop/Evan_Personal_Use/SchedulingAlgDisplay/SchedulingAlgDisplay/Aperiodic_Scheduling/InputFiles/PollingServerTests/aper_test_4.csv");
+    //Generate Schedules
+    int size = 0;
+    int* expected_schedule = generate_schedule(&size, "/home/rmasl/Desktop/Evan_Personal_Use/SchedulingAlgDisplay/SchedulingAlgDisplay/Aperiodic_Scheduling/InputFiles/PollingServerTests/result4.csv");
+    PollingServer* ps = new PollingServer(aper_workload, per_workload, num_aper_tasks, num_per_tasks, alloted_server_index);
+
+    bool expected [3];
+    expected[0] = true;
+    expected[1] = true;
+    expected[2] = true;
+
+    int finish_times[num_aper_tasks];
+    finish_times[0] = 2;
+    finish_times[1] = 3;
+    finish_times[2] = 7;
+    finish_times[3] = 16;
+    finish_times[4] = 26;
+    finish_times[5] = 31;
+
+    //Verify Every Test has passed
+    for(int i = 0; i < 6; i++){
+        //Conver QString to const char *
+        QByteArray ba = result_messages(i).toLocal8Bit();
+        char* str = ba.data();
+        QVERIFY2(results(ps, size, expected_schedule, expected[i], i, finish_times), str);
         if(!ps->getScheduable() && i == 2){
             break;
         }
