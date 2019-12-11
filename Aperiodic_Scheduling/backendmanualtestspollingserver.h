@@ -20,9 +20,11 @@ private slots:
     void initTestCase();
     void init();
     void cleanup();
+    static int* generate_schedule(int* size, QString filename);
 private:
     bool results(PollingServer* ps, int len, int* sched, bool expected, int i, int* finish_times);
     QString result_messages(int i);
+
 
 };
 

@@ -23,8 +23,8 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    //BackendManualTestsPollingServer* bt = new BackendManualTestsPollingServer(nullptr);
-    //QTest::qExec(bt);
+    BackendManualTestsPollingServer* bt = new BackendManualTestsPollingServer(nullptr);
+    QTest::qExec(bt);
 
     //Color Pallete
     QColor colors[7];

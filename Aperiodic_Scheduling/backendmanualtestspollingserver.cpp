@@ -3,7 +3,8 @@
 #include "Backend/aperiodictask.h"
 #include "Backend/periodictask.h"
 #include "Backend/pollingserver.h"
-
+#include <iostream>
+#include <fstream>
 
 BackendManualTestsPollingServer::BackendManualTestsPollingServer(QObject* parent)
 {
@@ -131,78 +132,20 @@ void BackendManualTestsPollingServer::aperiodic_fail_one(){
 }
 
 void BackendManualTestsPollingServer::feasible_schedule_one(){
-    PeriodicTask per_workload[3];
-    AperiodicTask aper_workload[3];
 
-    //T1 = {1,4};
-    per_workload[0].setComputation_time(1);
-    per_workload[0].setRemaining_cpu_time(1);
-    per_workload[0].setPeriod(4);
-
-    //T2 = {1,8};
-    per_workload[1].setComputation_time(1);
-    per_workload[1].setRemaining_cpu_time(1);
-    per_workload[1].setPeriod(8);
-
-    //Ts = {3, 8}
-    per_workload[2].setComputation_time(3);
-    per_workload[2].setRemaining_cpu_time(3);
-    per_workload[2].setPeriod(8);
-
-    //A0 = {0,2,10}
-    aper_workload[0].setReady_time(0);
-    aper_workload[0].setComputation_time(2);
-    aper_workload[0].setRemaining_cpu_time(2);
-    aper_workload[0].setDeadline(10);
-    aper_workload[0].setIndex(0);
-
-    //A1 = {0,1,11}
-    aper_workload[1].setReady_time(0);
-    aper_workload[1].setComputation_time(1);
-    aper_workload[1].setRemaining_cpu_time(1);
-    aper_workload[1].setDeadline(11);
-    aper_workload[1].setIndex(1);
-
-    //A2 = {0, 2, 16}
-    aper_workload[2].setReady_time(0);
-    aper_workload[2].setComputation_time(2);
-    aper_workload[2].setRemaining_cpu_time(2);
-    aper_workload[2].setDeadline(16);
-    aper_workload[2].setIndex(2);
-
-    PollingServer* ps = new PollingServer(aper_workload, per_workload, 3, 3, 2);
+    int num_per_tasks, num_aper_tasks, alloted_server_index;
+    //Generate Workload
+    PeriodicTask* per_workload = PeriodicTask::parse_file(&num_per_tasks, &alloted_server_index, "/home/rmasl/Desktop/Evan_Personal_Use/SchedulingAlgDisplay/SchedulingAlgDisplay/Aperiodic_Scheduling/InputFiles/PollingServerTests/per_test_1.csv");
+    AperiodicTask* aper_workload = AperiodicTask::parse_file(&num_aper_tasks, "/home/rmasl/Desktop/Evan_Personal_Use/SchedulingAlgDisplay/SchedulingAlgDisplay/Aperiodic_Scheduling/InputFiles/PollingServerTests/aper_test_1.csv");
+    //Generate Schedules
+    int size = 0;
+    int* expected_schedule = generate_schedule(&size, "/home/rmasl/Desktop/Evan_Personal_Use/SchedulingAlgDisplay/SchedulingAlgDisplay/Aperiodic_Scheduling/InputFiles/PollingServerTests/result1.csv");
+    PollingServer* ps = new PollingServer(aper_workload, per_workload, num_aper_tasks, num_per_tasks, alloted_server_index);
 
     bool expected [3];
     expected[0] = true;
     expected[1] = true;
     expected[2] = true;
-
-
-    int expected_schedule[24];
-    expected_schedule[0] = 0;
-    expected_schedule[1] = 1;
-    expected_schedule[2] = 2;
-    expected_schedule[3] = 2;
-    expected_schedule[4] = 0;
-    expected_schedule[5] = 2;
-    expected_schedule[6] = -1;
-    expected_schedule[7] = -1;
-    expected_schedule[8] = 0;
-    expected_schedule[9] = 1;
-    expected_schedule[10] = 2;
-    expected_schedule[11] = 2;
-    expected_schedule[12] = 0;
-    expected_schedule[13] = -1;
-    expected_schedule[14] = -1;
-    expected_schedule[15] = -1;
-    expected_schedule[16] = 0;
-    expected_schedule[17] = 1;
-    expected_schedule[18] = -1;
-    expected_schedule[19] = -1;
-    expected_schedule[20] = 0;
-    expected_schedule[21] = -1;
-    expected_schedule[22] = -1;
-    expected_schedule[23] = -1;
 
     int finish_times[3];
     finish_times[0] = 4;
@@ -222,186 +165,20 @@ void BackendManualTestsPollingServer::feasible_schedule_one(){
 }
 
 void BackendManualTestsPollingServer::feasible_schedule_two(){
-    PeriodicTask per_workload[4];
-    AperiodicTask aper_workload[7];
 
-    //T0 = {1,5};
-    per_workload[0].setComputation_time(1);
-    per_workload[0].setRemaining_cpu_time(1);
-    per_workload[0].setPeriod(5);
-
-    //TS = {4,10};
-    per_workload[1].setComputation_time(4);
-    per_workload[1].setRemaining_cpu_time(4);
-    per_workload[1].setPeriod(10);
-
-    //T2 = {2, 20}
-    per_workload[2].setComputation_time(2);
-    per_workload[2].setRemaining_cpu_time(2);
-    per_workload[2].setPeriod(20);
-
-    //T3 = {2, 50}
-    per_workload[3].setComputation_time(2);
-    per_workload[3].setRemaining_cpu_time(2);
-    per_workload[3].setPeriod(50);
-
-    //A0 = {3,3,20}
-    aper_workload[0].setReady_time(3);
-    aper_workload[0].setComputation_time(3);
-    aper_workload[0].setRemaining_cpu_time(3);
-    aper_workload[0].setDeadline(20);
-    aper_workload[0].setIndex(0);
-
-    //A1 = {5,4,30}
-    aper_workload[1].setReady_time(5);
-    aper_workload[1].setComputation_time(4);
-    aper_workload[1].setRemaining_cpu_time(4);
-    aper_workload[1].setDeadline(30);
-    aper_workload[1].setIndex(1);
-
-    //A2 = {6, 4, 40}
-    aper_workload[2].setReady_time(6);
-    aper_workload[2].setComputation_time(4);
-    aper_workload[2].setRemaining_cpu_time(4);
-    aper_workload[2].setDeadline(40);
-    aper_workload[2].setIndex(2);
-
-    //A3 = {18, 2, 60}
-    aper_workload[3].setReady_time(18);
-    aper_workload[3].setComputation_time(2);
-    aper_workload[3].setRemaining_cpu_time(2);
-    aper_workload[3].setDeadline(60);
-    aper_workload[3].setIndex(3);
-
-    //A4 = {25, 3, 75}
-    aper_workload[4].setReady_time(25);
-    aper_workload[4].setComputation_time(3);
-    aper_workload[4].setRemaining_cpu_time(3);
-    aper_workload[4].setDeadline(75);
-    aper_workload[4].setIndex(4);
-
-    //A5 = {32, 2, 87}
-    aper_workload[5].setReady_time(32);
-    aper_workload[5].setComputation_time(2);
-    aper_workload[5].setRemaining_cpu_time(2);
-    aper_workload[5].setDeadline(87);
-    aper_workload[5].setIndex(5);
-
-    //A6 = {49, 3, 95}
-    aper_workload[6].setReady_time(49);
-    aper_workload[6].setComputation_time(3);
-    aper_workload[6].setRemaining_cpu_time(3);
-    aper_workload[6].setDeadline(95);
-    aper_workload[6].setIndex(6);
-
-    PollingServer* ps = new PollingServer(aper_workload, per_workload, 7, 4, 1);
+    int num_per_tasks, num_aper_tasks, alloted_server_index;
+    //Generate Workload
+    PeriodicTask* per_workload = PeriodicTask::parse_file(&num_per_tasks, &alloted_server_index, "/home/rmasl/Desktop/Evan_Personal_Use/SchedulingAlgDisplay/SchedulingAlgDisplay/Aperiodic_Scheduling/InputFiles/PollingServerTests/per_test_2.csv");
+    AperiodicTask* aper_workload = AperiodicTask::parse_file(&num_aper_tasks, "/home/rmasl/Desktop/Evan_Personal_Use/SchedulingAlgDisplay/SchedulingAlgDisplay/Aperiodic_Scheduling/InputFiles/PollingServerTests/aper_test_2.csv");
+    //Generate Schedules
+    int size = 0;
+    int* expected_schedule = generate_schedule(&size, "/home/rmasl/Desktop/Evan_Personal_Use/SchedulingAlgDisplay/SchedulingAlgDisplay/Aperiodic_Scheduling/InputFiles/PollingServerTests/result2.csv");
+    PollingServer* ps = new PollingServer(aper_workload, per_workload, num_aper_tasks, num_per_tasks, alloted_server_index);
 
     bool expected [3];
     expected[0] = true;
     expected[1] = true;
     expected[2] = true;
-
-    int expected_schedule[100];
-    expected_schedule[0] = 0;
-    expected_schedule[1] = 2;
-    expected_schedule[2] = 2;
-    expected_schedule[3] = 3;
-    expected_schedule[4] = 3;
-    expected_schedule[5] = 0;
-    expected_schedule[6] = -1;
-    expected_schedule[7] = -1;
-    expected_schedule[8] = -1;
-    expected_schedule[9] = -1;
-    expected_schedule[10] = 0;
-    expected_schedule[11] = 1;
-    expected_schedule[12] = 1;
-    expected_schedule[13] = 1;
-    expected_schedule[14] = 1;
-    expected_schedule[15] = 0;
-    expected_schedule[16] = -1;
-    expected_schedule[17] = -1;
-    expected_schedule[18] = -1;
-    expected_schedule[19] = -1;
-    expected_schedule[20] = 0;
-    expected_schedule[21] = 1;
-    expected_schedule[22] = 1;
-    expected_schedule[23] = 1;
-    expected_schedule[24] = 1;
-    expected_schedule[25] = 0;
-    expected_schedule[26] = 2;
-    expected_schedule[27] = 2;
-    expected_schedule[28] = -1;
-    expected_schedule[29] = -1;
-    expected_schedule[30] = 0;
-    expected_schedule[31] = 1;
-    expected_schedule[32] = 1;
-    expected_schedule[33] = 1;
-    expected_schedule[34] = 1;
-    expected_schedule[35] = 0;
-    expected_schedule[36] = -1;
-    expected_schedule[37] = -1;
-    expected_schedule[38] = -1;
-    expected_schedule[39] = -1;
-    expected_schedule[40] = 0;
-    expected_schedule[41] = 1;
-    expected_schedule[42] = 1;
-    expected_schedule[43] = 1;
-    expected_schedule[44] = 1;
-    expected_schedule[45] = 0;
-    expected_schedule[46] = 2;
-    expected_schedule[47] = 2;
-    expected_schedule[48] = -1;
-    expected_schedule[49] = -1;
-    expected_schedule[50] = 0;
-    expected_schedule[51] = 1;
-    expected_schedule[52] = 1;
-    expected_schedule[53] = 1;
-    expected_schedule[54] = 1;
-    expected_schedule[55] = 0;
-    expected_schedule[56] = 3;
-    expected_schedule[57] = 3;
-    expected_schedule[58] = -1;
-    expected_schedule[59] = -1;
-    expected_schedule[60] = 0;
-    expected_schedule[61] = 1;
-    expected_schedule[62] = 2;
-    expected_schedule[63] = 2;
-    expected_schedule[64] = -1;
-    expected_schedule[65] = 0;
-    expected_schedule[66] = -1;
-    expected_schedule[67] = -1;
-    expected_schedule[68] = -1;
-    expected_schedule[69] = -1;
-    expected_schedule[70] = 0;
-    expected_schedule[71] = -1;
-    expected_schedule[72] = -1;
-    expected_schedule[73] = -1;
-    expected_schedule[74] = -1;
-    expected_schedule[75] = 0;
-    expected_schedule[76] = -1;
-    expected_schedule[77] = -1;
-    expected_schedule[78] = -1;
-    expected_schedule[79] = -1;
-    expected_schedule[80] = 0;
-    expected_schedule[81] = 2;
-    expected_schedule[82] = 2;
-    expected_schedule[83] = -1;
-    expected_schedule[84] = -1;
-    expected_schedule[85] = 0;
-    expected_schedule[86] = -1;
-    expected_schedule[87] = -1;
-    expected_schedule[88] = -1;
-    expected_schedule[89] = -1;
-    expected_schedule[90] = 0;
-    expected_schedule[91] = -1;
-    expected_schedule[92] = -1;
-    expected_schedule[93] = -1;
-    expected_schedule[94] = -1;
-    expected_schedule[95] = 0;
-    expected_schedule[96] = -1;
-    expected_schedule[97] = -1;
-    expected_schedule[98] = -1;
-    expected_schedule[99] = -1;
 
     int finish_times[7];
     finish_times[0] = 14;
@@ -412,13 +189,12 @@ void BackendManualTestsPollingServer::feasible_schedule_two(){
     finish_times[5] = 53;
     finish_times[6] = 62;
 
-
     //Verify Every Test has passed
     for(int i = 0; i < 6; i++){
         //Conver QString to const char *
         QByteArray ba = result_messages(i).toLocal8Bit();
         char* str = ba.data();
-        QVERIFY2(results(ps, 100, expected_schedule, expected[i], i, finish_times), str);
+        QVERIFY2(results(ps, size, expected_schedule, expected[i], i, finish_times), str);
         if(!ps->getScheduable() && i == 2){
             break;
         }
@@ -429,84 +205,20 @@ void BackendManualTestsPollingServer::feasible_schedule_two(){
 }
 
 void BackendManualTestsPollingServer::feasible_schedule_three(){
-    PeriodicTask per_workload[3];
-    AperiodicTask aper_workload[4];
 
-    //T0 = {1,4};
-    per_workload[0].setComputation_time(1);
-    per_workload[0].setRemaining_cpu_time(1);
-    per_workload[0].setPeriod(4);
-
-    //TS = {2,8};
-    per_workload[1].setComputation_time(2);
-    per_workload[1].setRemaining_cpu_time(2);
-    per_workload[1].setPeriod(8);
-
-    //T2 = {3,12};
-    per_workload[2].setComputation_time(3);
-    per_workload[2].setRemaining_cpu_time(3);
-    per_workload[2].setPeriod(12);
-
-    //A0 = {0,3,24}
-    aper_workload[0].setReady_time(0);
-    aper_workload[0].setComputation_time(3);
-    aper_workload[0].setRemaining_cpu_time(3);
-    aper_workload[0].setDeadline(23);
-    aper_workload[0].setIndex(0);
-
-    //A1 = {0,1,16}
-    aper_workload[1].setReady_time(0);
-    aper_workload[1].setComputation_time(1);
-    aper_workload[1].setRemaining_cpu_time(1);
-    aper_workload[1].setDeadline(16);
-    aper_workload[1].setIndex(1);
-
-    //A2 = {0,1,20}
-    aper_workload[2].setReady_time(0);
-    aper_workload[2].setComputation_time(1);
-    aper_workload[2].setRemaining_cpu_time(1);
-    aper_workload[2].setDeadline(20);
-    aper_workload[2].setIndex(2);
-
-    //A3 = {0,1,22}
-    aper_workload[3].setReady_time(0);
-    aper_workload[3].setComputation_time(1);
-    aper_workload[3].setRemaining_cpu_time(1);
-    aper_workload[3].setDeadline(22);
-    aper_workload[3].setIndex(3);
-
-    PollingServer* ps = new PollingServer(aper_workload, per_workload, 4, 3, 1);
+    int num_per_tasks, num_aper_tasks, alloted_server_index;
+    //Generate Workload
+    PeriodicTask* per_workload = PeriodicTask::parse_file(&num_per_tasks, &alloted_server_index, "/home/rmasl/Desktop/Evan_Personal_Use/SchedulingAlgDisplay/SchedulingAlgDisplay/Aperiodic_Scheduling/InputFiles/PollingServerTests/per_test_3.csv");
+    AperiodicTask* aper_workload = AperiodicTask::parse_file(&num_aper_tasks, "/home/rmasl/Desktop/Evan_Personal_Use/SchedulingAlgDisplay/SchedulingAlgDisplay/Aperiodic_Scheduling/InputFiles/PollingServerTests/aper_test_3.csv");
+    //Generate Schedules
+    int size = 0;
+    int* expected_schedule = generate_schedule(&size, "/home/rmasl/Desktop/Evan_Personal_Use/SchedulingAlgDisplay/SchedulingAlgDisplay/Aperiodic_Scheduling/InputFiles/PollingServerTests/result3.csv");
+    PollingServer* ps = new PollingServer(aper_workload, per_workload, num_aper_tasks, num_per_tasks, alloted_server_index);
 
     bool expected [3];
     expected[0] = true;
     expected[1] = true;
     expected[2] = true;
-
-    int expected_schedule[24];
-    expected_schedule[0] = 0;
-    expected_schedule[1] = 1;
-    expected_schedule[2] = 1;
-    expected_schedule[3] = 2;
-    expected_schedule[4] = 0;
-    expected_schedule[5] = 2;
-    expected_schedule[6] = 2;
-    expected_schedule[7] = -1;
-    expected_schedule[8] = 0;
-    expected_schedule[9] = 1;
-    expected_schedule[10] = 1;
-    expected_schedule[11] = -1;
-    expected_schedule[12] = 0;
-    expected_schedule[13] = 2;
-    expected_schedule[14] = 2;
-    expected_schedule[15] = 2;
-    expected_schedule[16] = 0;
-    expected_schedule[17] = 1;
-    expected_schedule[18] = 1;
-    expected_schedule[19] = -1;
-    expected_schedule[20] = 0;
-    expected_schedule[21] = -1;
-    expected_schedule[22] = -1;
-    expected_schedule[23] = -1;
 
     int finish_times[4];
     finish_times[0] = 19;
@@ -567,6 +279,55 @@ QString BackendManualTestsPollingServer::result_messages(int i){
 
     }
 
+}
+int* BackendManualTestsPollingServer::generate_schedule(int* size, QString filename){
+    QByteArray ba = filename.toLocal8Bit();
+    const char* file = ba.data();
+    printf("Schedule Input: %s\n", file);
+    std::string line;
+    std::ifstream input_file (file);
+
+    *size = 0;
+    int i = 0;
+
+    if(input_file.is_open()){
+        if(getline(input_file, line)){
+            *size = std::stoi(line);
+            int* workload = new int[*size];
+        while(getline(input_file, line) && i < *size){
+            int index = 0;
+            QString values[10];
+            values[0] = "";
+            values[1] = "";
+            values[2] = "";
+            values[3] = "";
+            values[4] = "";
+            values[5] = "";
+            values[6] = "";
+            values[7] = "";
+            values[8] = "";
+            values[9] = "";
+
+            //Iterate through line and delimit by comma
+            for(unsigned j = 0; j < line.length(); j++){
+                if(line.at(j) != ','){
+                    values[index].append(line.at(j));
+                }
+                else{
+                    index++;
+                }
+            }
+            for(int j = 0; j < 10; j++){
+                if(!values[j].isEmpty())
+                    workload[i+j] = values[j].toInt();
+            }
+            i = i + 10;
+        }
+        return workload;
+        }
+
+    }
+    return nullptr;
 }
 
 
