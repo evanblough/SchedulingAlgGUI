@@ -10,6 +10,7 @@
 #include "Backend/deadlinecomparator.h"
 #include "QTest"
 #include "backendmanualtestspollingserver.h"
+#include "backendmanualtestsdefferableserver.h"
 #include <queue>
 #include <vector>
 #include <bits/stdc++.h>
@@ -18,13 +19,17 @@
 #include "Frontend/displayadjuster.h"
 #include "controller.h"
 #include "ui_analysiswindow.h"
+#include "Backend/defferableserver.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
     BackendManualTestsPollingServer* bt = new BackendManualTestsPollingServer(nullptr);
+    BackendManualTestsDefferableServer* ds = new BackendManualTestsDefferableServer();
     QTest::qExec(bt);
+    printf("\n\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n\n");
+    QTest::qExec(ds);
 
     //Color Pallete
     QColor colors[7];

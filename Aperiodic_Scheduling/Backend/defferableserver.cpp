@@ -106,6 +106,9 @@ void DefferableServer::produce_schedule(){
         for(int i = 0; i < this->getNum_per_tasks(); i++){
             if(time % this->getPer_tasks()[i].getPeriod() == 0){
                 this->getPer_tasks()[i].setRemaining_cpu_time(this->getPer_tasks()[i].getComputation_time());
+                if(i == this->getAlloted_server_index()){
+                    this->getAlloted_server()->setRemaining_cpu_time(this->getAlloted_server()->getComputation_time());
+                }
             }
         }
 
@@ -138,14 +141,13 @@ void DefferableServer::produce_schedule(){
                 break;
             }
             //If periodic task
-            else if(this->getPer_tasks()[i].getRemaining_cpu_time() > 0){
+            else if(this->getPer_tasks()[i].getRemaining_cpu_time() > 0 && i != this->getAlloted_server_index()){
                 this->getSchedule()[time] = i;
                 this->getPer_tasks()[i].setRemaining_cpu_time(this->getPer_tasks()[i].getRemaining_cpu_time()-1);
                 break;
             }
-            //shouldn't happen
+            //Idle is set as default value, so no need to set heref
             else{
-                break;
             }
 
 

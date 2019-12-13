@@ -11,6 +11,9 @@ class BackendManualTestsPollingServer: public QObject
     Q_OBJECT
 public:
     BackendManualTestsPollingServer(QObject *parent);
+    static int* generate_schedule(int* size, QString filename);
+    static bool results(AperiodicScheduler* ps, int len, int* sched, bool expected, int i, int* finish_times);
+    static QString result_messages(int i);
 private slots:
     void aperiodic_fail_one();
     void periodic_fail_one();
@@ -21,10 +24,8 @@ private slots:
     void initTestCase();
     void init();
     void cleanup();
-    static int* generate_schedule(int* size, QString filename);
 private:
-    bool results(PollingServer* ps, int len, int* sched, bool expected, int i, int* finish_times);
-    QString result_messages(int i);
+
 
 
 };
