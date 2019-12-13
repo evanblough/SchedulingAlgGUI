@@ -34,7 +34,11 @@ Controller::Controller(QObject *parent, WorkloadWindow* workload_window, Analysi
 
 }
 
-
+/**
+ * @brief Controller::file_input_selected This is a slot that is mapped to the file input button. This will execute upon pressing the file input button.
+ * It will try to read from the files currently in the input window.
+ * @param checked
+ */
 void Controller::file_input_selected(bool checked){
 
     //Grab Aperiodic Filename
@@ -67,7 +71,11 @@ void Controller::file_input_selected(bool checked){
     workload_set_flag = true;
 
 }
-
+/**
+ * @brief Controller::manual_input_selected This slot will launch a manual output subwindow based on the number of tasks inputted by the user.
+ * It is triggered by the manual input button in the mainwindow
+ * @param checked
+ */
 void Controller::manual_input_selected(bool checked){
     //Grab Number of Aper Tasks
     QString str = this->workload_window->getUi()->num_aper_tasks->toPlainText();
@@ -84,7 +92,11 @@ void Controller::manual_input_selected(bool checked){
     workload_set_flag = true;
 
 }
-
+/**
+ * @brief Controller::polling_server_selected This is a slot mapped to the pollingserver checkbox in the analysis window. When the polling server box is checked it will
+ * lock the field until run_analysis button or polling server is unclicked.
+ * @param checked
+ */
 void Controller::polling_server_selected(bool checked){
     //If not checked set flag
     if(!defferable_server_flag){
@@ -97,6 +109,10 @@ void Controller::polling_server_selected(bool checked){
     }
 }
 
+/**
+ * @brief Controller::defferable_server_selected This is another slot with the same function as polling_server_selected(), except for defferable server.
+ * @param checked
+ */
 void Controller::defferable_server_selected(bool checked){
     //If not checked set flag
     if(!polling_server_flag){
@@ -109,19 +125,39 @@ void Controller::defferable_server_selected(bool checked){
     }
 }
 
+/**
+ * @brief Controller::cpu_selected This is a slot that is mapped to the cpu checkbox in the AnalysisWindow class.
+ * @param checked
+ */
 void Controller::cpu_selected(bool checked){
     printf("CPU Selected\n");
     cpu_flag = !cpu_flag;
 }
+/**
+ * @brief Controller::context_selected This is a slot that is mapped to the context switch checkbox in the AnalysisWindow class.
+ * @param checked
+ */
 void Controller::context_selected(bool checked){
     printf("Context Selected\n");
     context_flag = !context_flag;
 }
+
+/**
+ * @brief Controller::response_selected This is a slot that is mapped to the avg response time checkbox in the AnalysisWindow class.
+ * @param checked
+ */
 void Controller::response_selected(bool checked){
     printf("Avg Response Selected\n");
     response_flag = !response_flag;
 
 }
+/**
+ * @brief Controller::run_analysis This is a slot that is mapped to the run analysis button in the AnalysisWindow.
+ * It will check all the flags of the controller class to check for a valid run configuration.
+ * If the run configuration is valid it will generate an AperiodicScheduler object and populate the graph display window at the top of the mainwindow.
+ * It will also compute any checked analysis metrics
+ * @param checked
+ */
 void Controller::run_analysis(bool checked){
     //Run compatibility checks
     if(!defferable_server_flag && !polling_server_flag){
@@ -165,6 +201,11 @@ void Controller::run_analysis(bool checked){
 
 }
 
+/**
+ * @brief Controller::produce_schedule This function is called by the run_analysis() slot. It generates a schedule array for to fill the schedule field of the controller class.
+ * @param aper_scheduler this is the scheduler that will produce the schedule. It could be polling server or defferable server.
+ * @return Returns a pointer to the schedule array.
+ */
 bool Controller::produce_schedule(AperiodicScheduler* aper_scheduler){
     schedule = aper_scheduler->getSchedule();
     sched_len = aper_scheduler->getSchedule_length();
@@ -173,13 +214,17 @@ bool Controller::produce_schedule(AperiodicScheduler* aper_scheduler){
     return aper_scheduler->getScheduable();
 }
 
+/**
+ * @brief Controller::generate_schedule_graph This function is called by run_analysis() to fill the fields in GraphDisplay object to
+ * display the graph. It automatically scales it to an even size.
+ */
 void Controller::generate_schedule_graph(){
     graph_display->setNum_tasks(this->num_per_tasks);
     graph_display->setSched_len(sched_len);
     graph_display->setSchedule(schedule);
-    graph_display->setFixedSize(30000, 500);
-    graph_display->setW(30000);
-    graph_display->setH(500);
+    graph_display->setFixedSize(this->sched_len*30, this->num_per_tasks*80);
+    graph_display->setW(this->sched_len*30);
+    graph_display->setH(this->num_per_tasks*80);
     graph_display->setVscale(this->num_per_tasks+1);
     graph_display->setWscale(this->sched_len);
     graph_display->update();
@@ -196,11 +241,19 @@ void Controller::update_zoom_level(){
     graph_display->update();
 }
 
+/**
+ * @brief Controller::open_seperate_schedule This slot is mapped to the open_seperate_window button of the DisplayAdjuster Window.
+ * This opens a seperate graph display window, because it is hard to view sometimes with large schedules.
+ * @param checked
+ */
 void Controller::open_seperate_schedule(bool checked){
 //TODO
     printf("Open Seperate Schedule\n");
 }
 
+/**
+ * @brief Controller::update_start_time This sets the left bound for the GraphDisplay Window.
+ */
 void Controller::update_start_time(){
     start_time = this->display_adjuster->getUi()->start_time->toPlainText().toInt();
     //Fix Invalid Input
@@ -211,6 +264,9 @@ void Controller::update_start_time(){
 
 }
 
+/**
+ * @brief Controller::update_end_time This slot sets the right bound for the GraphDisplay Window.
+ */
 void Controller::update_end_time(){
     //TODO: Add CASES to check if start and end are populated;
     end_time = this->display_adjuster->getUi()->end_time->toPlainText().toInt();
@@ -234,7 +290,10 @@ void Controller::setSchedule(int *value)
 }
 
 
-
+/**
+ * @brief Controller::connect_sigs This function is called in the constructor to
+ * Map all the slots and signals of the subwindows of the mainwindow.
+ */
 void Controller::connect_sigs(){
     //Workload Window
     //File Input Button

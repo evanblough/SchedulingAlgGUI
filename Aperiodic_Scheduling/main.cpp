@@ -21,6 +21,12 @@
 #include "ui_analysiswindow.h"
 #include "Backend/defferableserver.h"
 
+/**
+ * @brief main main execution loop to run functionality tests, launch main window, generate subwindows, and apply pallete's.
+ * @param argc
+ * @param argv
+ * @return
+ */
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
