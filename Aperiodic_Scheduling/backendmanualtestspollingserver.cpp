@@ -6,11 +6,26 @@
 #include <iostream>
 #include <fstream>
 
+/**
+ * @brief BackendManualTestsPollingServer::BackendManualTestsPollingServer
+ * This class contains tests for the PollingServer Scheduler.
+ * @param parent
+ */
 BackendManualTestsPollingServer::BackendManualTestsPollingServer(QObject* parent)
 {
 
 }
 
+/**
+ * @brief BackendManualTestsPollingServer::results This static method runs tests for scheduability, proper schedule length, schedule values, and aperiodic finish times
+ * @param ps Aperiodic scheduler to be tested.
+ * @param len The anticipated schedule length
+ * @param sched A pointer to a schedule array that contains the expected schedule values
+ * @param expected Expected values of scheduability checks
+ * @param i The index that indicates what test is to be ran.
+ * @param finish_times A pointer to the expected finish times that is in the same order of the aperiodic tasks.
+ * @return Returns true if the expected test value matched the actual value read from ps.
+ */
 bool BackendManualTestsPollingServer::results(AperiodicScheduler* ps, int len, int* sched, bool expected, int i, int* finish_times){
     switch (i){
     default:
@@ -293,6 +308,11 @@ void BackendManualTestsPollingServer::cleanup(){
     return;
 }
 
+/**
+ * @brief BackendManualTestsPollingServer::result_messages This static method returns strings corresponding to types of error encountered during testing.
+ * @param i The index of the failed test which will map to the corresponding error message.
+ * @return A string that communicates what error occured.
+ */
 QString BackendManualTestsPollingServer::result_messages(int i){
 
    switch(i){
@@ -314,20 +334,32 @@ QString BackendManualTestsPollingServer::result_messages(int i){
     }
 
 }
+/**
+ * @brief BackendManualTestsPollingServer::generate_schedule This is a static function used by my testing classes to generate a schedule object from a csv.
+ * The csv file format is a length integer at the top, then lines of 10 values indicating task ran at that instance of time.
+ * @param size This is an integer pointer that will be set by the static method. It returns the length of the schedule as read by the csv file.
+ * @param filename This is a Qstring that contains the absolute filepath to the test file.
+ * @return This function returns a pointer to a heap allocated schedule integer array. This can be used by test classes to compare expected and actual outputs.
+ */
 int* BackendManualTestsPollingServer::generate_schedule(int* size, QString filename){
+    //Convert QString to char* for fopen()
     QByteArray ba = filename.toLocal8Bit();
     const char* file = ba.data();
     printf("Schedule Input: %s\n", file);
+    //Declare placeholder variables
     std::string line;
-    std::ifstream input_file (file);
-
     *size = 0;
     int i = 0;
-
+    //Generate input file
+    std::ifstream input_file (file);
+    //Read from input file
     if(input_file.is_open()){
         if(getline(input_file, line)){
+            //Read schedule length from csv
             *size = std::stoi(line);
+            //Allocate space for result
             int* workload = new int[*size];
+        //Itterate through csv to scan schedule values
         while(getline(input_file, line) && i < *size){
             int index = 0;
             QString values[10];
@@ -351,10 +383,12 @@ int* BackendManualTestsPollingServer::generate_schedule(int* size, QString filen
                     index++;
                 }
             }
+            //Populate workload with read values
             for(int j = 0; j < 10; j++){
                 if(!values[j].isEmpty())
                     workload[i+j] = values[j].toInt();
             }
+            //Update workload index
             i = i + 10;
         }
         return workload;

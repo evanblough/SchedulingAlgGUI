@@ -2,6 +2,19 @@
 #include "QPainter"
 #include "QPaintEvent"
 
+/**
+ * @brief GraphDisplay::GraphDisplay This is a QWidget class that takes in scheduling data and draws a
+ * corresponding schedule to match the schedule contents. The schedule is formatted so that the rows indicate which task is ran,
+ * and the columns indicate what time unit the task ran. This widget has constant size, so put it in a QScrollArea for easiest viewing.
+ * @param parent
+ * @param schedule A pointer to the schedule to be graphed.
+ * @param sched_len The length of the schedule to be graphed.
+ * @param num_tasks The number of periodic tasks of the schedule which will determine how many rows are drawn.
+ * @param wscale The width scaler. This will set the width of a schedule unit box equal to the value of w/wscale. Units are pixels.
+ * @param vscale The height scaler. This will set the height of a schedule unit box equal to the value of v/vscale.
+ * @param w The overall width of the graph display window. A justified schedule display would set this parameter equal to the (schedule length * wscale)
+ * @param h The overall height of the graph display window. A justified schedule display would set this parameter equal to ((num_tasks + 1)*vscale)
+ */
 GraphDisplay::GraphDisplay(QWidget *parent, int *schedule, int sched_len, int num_tasks, int wscale, int vscale, int w, int h) : QWidget(parent)
 {
     this->schedule = schedule;
@@ -15,7 +28,12 @@ GraphDisplay::GraphDisplay(QWidget *parent, int *schedule, int sched_len, int nu
 
 }
 
-//Called everytime a paintevent triggered ex: resize screen etc.
+
+/**
+ * @brief GraphDisplay::paintEvent This is an event filter method. This event filter processes everytime the screen is resized or updated.
+ * When it is resized or values are changed, it will repaint the new schedule.
+ * @param event
+ */
 void GraphDisplay::paintEvent(QPaintEvent *event)
 {
     //Width and Height of a task box
@@ -65,6 +83,16 @@ void GraphDisplay::paintEvent(QPaintEvent *event)
 
 }
 
+/**
+ * @brief GraphDisplay::draw_textbox This method is used by the paint filter to draw a textbox that holds the taskname and corresponding task color.
+ * @param x The upper left corner's x coordinate
+ * @param y The upper left corner's y coordinate
+ * @param width The width of the box to be drawn
+ * @param height The hieght of the box to be drawn
+ * @param background The background color of the box
+ * @param text_color The text color of the box
+ * @param taskname The name string of the box
+ */
 void GraphDisplay::draw_textbox(int x, int y, int width, int height, QColor background, QColor text_color, QString taskname ){
     QRect *rect = new QRect(x, y, width, height);
     QPainter painter(this);
@@ -75,6 +103,16 @@ void GraphDisplay::draw_textbox(int x, int y, int width, int height, QColor back
     painter.drawText(*rect, Qt::AlignCenter, taskname);
 }
 
+/**
+ * @brief GraphDisplay::draw_timeline This function draws gridlines to show when tasks stop running.
+ * @param box_width This is a misleading name, but it is the width of the whole GraphDisplay Window
+ * @param box_height This is a misleading name, but it is the height of the whole GraphDisplay Window
+ * @param linewidth Not used ATM
+ * @param width The width of the task boxes
+ * @param height The hieght of the tasks boxes
+ * @param start_time The start time to be displayed
+ * @param end_time The end time to be displayed
+ */
 void GraphDisplay::draw_timeline(int box_width, int box_height, int linewidth, int width, int height, int start_time, int end_time){
 
     QPainter painter(this);

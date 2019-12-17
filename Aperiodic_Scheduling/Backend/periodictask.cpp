@@ -75,6 +75,14 @@ void PeriodicTask::setRemaining_cpu_time(int value)
     remaining_cpu_time = value;
 }
 
+/**
+ * @brief PeriodicTask::parse_file This is a static method used by the ui and test functions.
+ * It reads csv files and generates periodic task arrays
+ * @param size The number of periodic tasks read from csv.
+ * @param alloted_server_index The index of the alloted server read from the csv. Indicated by a %
+ * @param filename The absolute filepath of the csv file
+ * @return Returns a periodic task array.
+ */
 PeriodicTask* PeriodicTask::parse_file(int* size, int* alloted_server_index, QString filename){
     QByteArray ba = filename.toLocal8Bit();
     const char* file = ba.data();

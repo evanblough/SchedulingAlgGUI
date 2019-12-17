@@ -129,6 +129,13 @@ void AperiodicTask::setIndex(int value)
     index = value;
 }
 
+/**
+ * @brief AperiodicTask::parse_file This is a static function used by the GUI and testing functions to construct aperiodic
+ * task arrays from csv file
+ * @param size A pointer to an integer that will be populated with the number of aperiodic tasks read from the csv.
+ * @param filename The filename of the csv
+ * @return An aperiodic task array
+ */
 AperiodicTask* AperiodicTask::parse_file(int* size, QString filename){
     QByteArray ba = filename.toLocal8Bit();
     const char* file = ba.data();

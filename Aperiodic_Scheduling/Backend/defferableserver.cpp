@@ -7,6 +7,15 @@
 
 int gcd(int a, int b);
 
+/**
+ * @brief DefferableServer::DefferableServer This is an AperiodicScheduler Class. It takes in a workload in the constructor and output a coressponding
+ * schedule array. It emulates the behavior of the Defferable Server Scheduling Algorihtim
+ * @param aper_tasks A pointer to the AperiodicTask array
+ * @param per_tasks A pointer to the PeriodicTask array
+ * @param num_aper_tasks The length of the aper_tasks array
+ * @param num_per_tasks The length of the per_tasks array
+ * @param alloted_server_index The index of the alloted server held within the per_tasks array
+ */
 DefferableServer::DefferableServer(AperiodicTask* aper_tasks, PeriodicTask* per_tasks, int num_aper_tasks, int num_per_tasks, int alloted_server_index)
 {
     this->setAper_tasks(aper_tasks);
@@ -24,7 +33,9 @@ DefferableServer::DefferableServer(AperiodicTask* aper_tasks, PeriodicTask* per_
 
 
 }
-
+/**
+ * @brief DefferableServer::perform_scheduability_test Checks the periodic scheduability of the given workload.
+ */
 void DefferableServer::perform_scheduability_test(){
     PeriodicTask ti;
     double sum_computation = 0.0;
@@ -35,7 +46,12 @@ void DefferableServer::perform_scheduability_test(){
     this->setScheduable(sum_computation <= this->getNum_per_tasks()*(pow(2.0, 1.0/this->getNum_per_tasks())-1));
 
 }
-
+/**
+ * @brief DefferableServer::calculate_sched_len Calculates the length of the schedule to be filled.
+ * I wanted the schedule display to show the aperiodic tasks being serviced and then the return to periodic functionality after they are done. This will calculate
+ * the LCM of periodic tasks and return a multiple of the LCM that is greater than the last aperiodic finish time.
+ * @return The smallest multiple of LCM that is greater than the last aperiodic finish time.
+ */
 int DefferableServer::calculate_sched_len(){
     //Find LCM
     int periods[this->getNum_per_tasks()];
@@ -75,6 +91,9 @@ int gcd(int a, int b){
     return gcd(b, a % b);
 }
 
+/**
+ * @brief DefferableServer::produce_schedule This method is used to populate the schedule array
+ */
 void DefferableServer::produce_schedule(){
 
     //Initialize Finish Times
