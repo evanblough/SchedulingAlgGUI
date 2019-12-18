@@ -12,6 +12,7 @@
 #include "Frontend/displayadjuster.h"
 #include "Frontend/graphdisplay.h"
 
+
 class Controller : public QObject
 {
     Q_OBJECT

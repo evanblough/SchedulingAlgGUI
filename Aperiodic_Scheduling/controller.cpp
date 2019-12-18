@@ -7,6 +7,8 @@
 #include "Backend/pollingserver.h"
 #include "ui_displayadjuster.h"
 #include "Backend/analysismetrics.h"
+#include "ui_seperategraphwindow.h"
+#include "Frontend/seperategraphwindow.h"
 
 /**
  * @brief Controller::Controller This Class is used for routing information in Frontend=>Frontend and Frontend=>Backend Communication.
@@ -247,8 +249,37 @@ void Controller::update_zoom_level(){
  * @param checked
  */
 void Controller::open_seperate_schedule(bool checked){
-//TODO
+
     printf("Open Seperate Schedule\n");
+    GraphDisplay* gd = new GraphDisplay();
+    gd->setNum_tasks(this->num_per_tasks);
+    gd->setSched_len(sched_len);
+    gd->setSchedule(schedule);
+    gd->setFixedSize(this->sched_len*30, this->num_per_tasks*80);
+    gd->setW(this->sched_len*30);
+    gd->setH(this->num_per_tasks*80);
+    gd->setVscale(this->num_per_tasks+1);
+    gd->setWscale(this->sched_len);
+    gd->update();
+
+    QColor colors[7];
+    colors[0].setNamedColor("#BFFBFF"); //Pale Blue
+    colors[1].setNamedColor("#1FCBFF"); //Teal
+    colors[2].setNamedColor("#2B95FF"); //Carolina Blue
+    colors[3].setNamedColor("#3414FF"); //Blue
+    colors[4].setNamedColor("#7A05FF"); //Purp
+    colors[5].setNamedColor("#065951"); //Dark Teal
+    colors[6].setNamedColor("#292629"); //Dark Grey
+
+    QPalette* palette = new QPalette(colors[1], colors[6], colors[0], colors[5], colors[2], colors[0], colors[6]);
+
+    SeperateGraphWindow* gw = new SeperateGraphWindow();
+    gw->setPalette(*palette);
+    gw->getUi()->scrollArea->setWidget(gd);
+    gd->show();
+    gw->show();
+    return;
+
 }
 
 /**

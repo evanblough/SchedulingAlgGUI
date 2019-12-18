@@ -28,6 +28,7 @@ SOURCES += \
     Frontend/analysiswindow.cpp \
     Frontend/displayadjuster.cpp \
     Frontend/graphdisplay.cpp \
+    Frontend/seperategraphwindow.cpp \
     Frontend/workloadwindow.cpp \
     backendmanualtestsdefferableserver.cpp \
     backendmanualtestspollingserver.cpp \
@@ -46,6 +47,7 @@ HEADERS += \
     Frontend/analysiswindow.h \
     Frontend/displayadjuster.h \
     Frontend/graphdisplay.h \
+    Frontend/seperategraphwindow.h \
     Frontend/workloadwindow.h \
     backendmanualtestsdefferableserver.h \
     backendmanualtestspollingserver.h \
@@ -55,6 +57,7 @@ HEADERS += \
 FORMS += \
     Frontend/analysiswindow.ui \
     Frontend/displayadjuster.ui \
+    Frontend/seperategraphwindow.ui \
     Frontend/workloadwindow.ui \
     mainwindow.ui \
 
